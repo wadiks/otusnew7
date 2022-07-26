@@ -1,4 +1,3 @@
-
 insert into genre (id, name)
 values (1, 'Ужас');
 insert into genre (id, name)

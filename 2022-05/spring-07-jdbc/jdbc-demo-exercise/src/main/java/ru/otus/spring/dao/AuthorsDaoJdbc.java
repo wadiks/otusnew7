@@ -33,7 +33,7 @@ public class AuthorsDaoJdbc implements AuthorsDao {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject("select a.id authors_id , a.name authors_name, a.surname authors_surname, " +
                 "b.id books_i, b.name books_name, b.genre_id , b.authors_id from authors a  " +
-                        "LEFT JOIN books b ON b.id= a.id  where a.id = :id", params, new AutorsMapper() );
+                "LEFT JOIN books b ON b.id= a.id  where a.id = :id", params, new AutorsMapper());
     }
 
     @Override
@@ -50,12 +50,11 @@ public class AuthorsDaoJdbc implements AuthorsDao {
             long id = resultSet.getLong("authors_id");
             String name = resultSet.getString("authors_name");
             String surname = resultSet.getString("authors_surname");
-
             long bId = resultSet.getLong("books_i");
             String bName = resultSet.getString("books_name");
             Integer bGenreId = resultSet.getInt("genre_id");
             Integer bAuthorsId = resultSet.getInt("authors_id");
-            return new Authors(id, name, surname, new Books(bId,bName,bGenreId,bAuthorsId));
+            return new Authors(id, name, surname, new Books(bId, bName, bGenreId, bAuthorsId));
         }
     }
 

@@ -33,11 +33,10 @@ public class Authors {
 
     }
 
-    public Authors(long id, String name,  String surname, Books books) {
+    public Authors(long id, String name, String surname, Books books) {
         this.id = id;
         this.name = name;
         this.a_book = books;
         this.surname = surname;
     }
-
 }

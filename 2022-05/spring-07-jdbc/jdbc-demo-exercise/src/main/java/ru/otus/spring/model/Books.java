@@ -31,10 +31,9 @@ public class Books {
         this.authorsId = authorsId;
     }
 
-    public Books( String name, Integer genreId, Integer authorsId) {
+    public Books(String name, Integer genreId, Integer authorsId) {
         this.name = name;
         this.genreId = genreId;
         this.authorsId = authorsId;
     }
-
 }

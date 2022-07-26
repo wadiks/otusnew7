@@ -17,7 +17,7 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @DisplayName("Запуск теста Dao")
 @JdbcTest
-@Import({ BooksDaoJdbc.class})
+@Import({BooksDaoJdbc.class})
 class BooksDaoJdbcTest {
 
     private static final int EXPECTED_BOOKS_COUNT = 8;
@@ -29,12 +29,12 @@ class BooksDaoJdbcTest {
     private BooksDaoJdbc booksJdbc;
 
     @BeforeTransaction
-    void beforeTransaction(){
+    void beforeTransaction() {
         System.out.println("beforeTransaction");
     }
 
     @AfterTransaction
-    void afterTransaction(){
+    void afterTransaction() {
         System.out.println("afterTransaction");
     }
 
@@ -48,7 +48,7 @@ class BooksDaoJdbcTest {
     @DisplayName("добавление книг в БД")
     @Test
     void shouldInsertBooks() {
-        Books expectedBooks = new Books("Война и мир", 5,9);
+        Books expectedBooks = new Books("Война и мир", 5, 9);
         booksJdbc.insert(expectedBooks);
         Books actualBooks = booksJdbc.getById(expectedBooks.getId());
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
@@ -57,7 +57,7 @@ class BooksDaoJdbcTest {
     @DisplayName("возвращение книги по его id")
     @Test
     void shouldReturnExpectedBooksById() {
-        Books expectedBooks = new Books(EXISTING_Books_ID, EXISTING_Books_NAME,2,1);
+        Books expectedBooks = new Books(EXISTING_Books_ID, EXISTING_Books_NAME, 2, 1);
         Books actualBooks = booksJdbc.getById(expectedBooks.getId());
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
     }
@@ -78,7 +78,7 @@ class BooksDaoJdbcTest {
     @Test
     void shouldReturnExpectedBookssList() {
         List<Books> actualBooksList = booksJdbc.getAll();
-        assertNotNull("Обьект возвращает null проверьте данные",actualBooksList);
+        assertNotNull("Обьект возвращает null проверьте данные", actualBooksList);
     }
 
 }

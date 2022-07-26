@@ -22,22 +22,18 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Help command", key = {"?"})
     public void help() {
         System.out.println("Список команд которые можно сделать.");
-
         System.out.println("Посмотреть весь каталог книг. Команда - books , bGetAll");
         System.out.println("Количество книг. Команда - c, count");
         System.out.println("Добавить книгу. Команда - ins, insert");
         System.out.println("Удалить книгу книгу. Команда - del, delete");
         System.out.println("Найти книгу по id. Команда - bId, bGetId");
         System.out.println("Изменить название книги. Команда - rename");
-
         System.out.println("Количество авторов. Команда - a, aCount");
         System.out.println("Посмотреть всех аторов. Команда - authors , aGetAll");
         System.out.println("Найти автора по id. Команда - aId, aGetId");
-
         System.out.println("Количество жанров. Команда - g, gCount");
         System.out.println("Посмотреть все жанры. Команда - genres, gGetAll");
         System.out.println("Найти жанр по id. Команда - gId, gGetId");
-
     }
 
     //--------------------------------------------книги ------------------------------------------------------------
@@ -192,7 +188,6 @@ public class ApplicationShellCommands {
             System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", g.getId(), g.getName()));
         });
     }
-
 
 }
 
