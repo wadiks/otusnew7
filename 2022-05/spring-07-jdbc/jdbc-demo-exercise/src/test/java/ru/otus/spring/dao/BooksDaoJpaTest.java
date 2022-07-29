@@ -1,32 +1,38 @@
 package ru.otus.spring.dao;
 
+import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.model.Books;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
-@DisplayName("Запуск теста Dao")
-@JdbcTest
-@Import({BooksDaoJdbc.class})
-class BooksDaoJdbcTest {
+@DisplayName("Запуск теста JPA")
+@DataJpaTest
+@Import({BooksDaoJpa.class})
+class BooksDaoJpaTest {
 
-    private static final int EXPECTED_BOOKS_COUNT = 8;
-    private static final int EXISTING_Books_ID = 1;
-    private static final String EXISTING_Books_NAME = "Мидлмарч";
+    private static final long EXPECTED_BOOKS_COUNT = 8;
+    private static final long FIRST_BOOKS_ID = 1L;
 
 
     @Autowired
-    private BooksDaoJdbc booksJdbc;
+    private TestEntityManager em;
+    @Autowired
+    private BooksDaoJpa booksJpa;
+
 
     @BeforeTransaction
     void beforeTransaction() {
@@ -40,44 +46,47 @@ class BooksDaoJdbcTest {
 
     @DisplayName("Количество книг в БД")
     @Test
+    @Transactional(readOnly = true)
     void shouldReturnExpectedBooksCount() {
-        int actualBooksCount = booksJdbc.count();
+        Long actualBooksCount = booksJpa.count();
         assertThat(actualBooksCount).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
 
     @DisplayName("добавление книг в БД")
     @Test
+    @Transactional()
     void shouldInsertBooks() {
         Books expectedBooks = new Books("Война и мир", 5, 9);
-        booksJdbc.insert(expectedBooks);
-        Books actualBooks = booksJdbc.getById(expectedBooks.getId());
+        booksJpa.insert(expectedBooks);
+        Books actualBooks = booksJpa.getById(expectedBooks.getId()).get();
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
     }
 
     @DisplayName("возвращение книги по его id")
     @Test
+    @Transactional()
     void shouldReturnExpectedBooksById() {
-        Books expectedBooks = new Books(EXISTING_Books_ID, EXISTING_Books_NAME, 2, 1);
-        Books actualBooks = booksJdbc.getById(expectedBooks.getId());
-        assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
+        val optionalActualBooks = booksJpa.getById(FIRST_BOOKS_ID);
+        val expectedStudent = em.find(Books.class, FIRST_BOOKS_ID);
+        assertThat(optionalActualBooks).isPresent().get().usingRecursiveComparison().isEqualTo(expectedStudent);
     }
 
     @DisplayName("удалять заданную книгу по его id")
     @Test
+    @Transactional
     void shouldCorrectDeleteBooksById() {
-        assertThatCode(() -> booksJdbc.getById(EXISTING_Books_ID))
+        assertThatCode(() -> booksJpa.getById(FIRST_BOOKS_ID))
                 .doesNotThrowAnyException();
-
-        booksJdbc.deleteById(EXISTING_Books_ID);
-
-        assertThatThrownBy(() -> booksJdbc.getById(EXISTING_Books_ID))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+        booksJpa.deleteById(FIRST_BOOKS_ID);
+        Long actualBooksCount = booksJpa.count();
+        assertThat(actualBooksCount).isEqualTo(7L);
     }
 
     @DisplayName("возвращать список книг")
     @Test
-    void shouldReturnExpectedBookssList() {
-        List<Books> actualBooksList = booksJdbc.getAll();
+    @Transactional(readOnly = true)
+    void shouldReturnExpectedBooksList() {
+        List<Books> actualBooksList = booksJpa.getAll();
         assertNotNull("Обьект возвращает null проверьте данные", actualBooksList);
     }
 

@@ -1,11 +1,15 @@
 package ru.otus.spring.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "authors")
@@ -22,21 +26,8 @@ public class Authors {
     @Column(name = "surname")
     private String surname;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Books.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "authors_id")
-    private Books a_book;
+    private List<Books> a_book;
 
-    public Authors(long id, String name, String surname) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-
-    }
-
-    public Authors(long id, String name, String surname, Books books) {
-        this.id = id;
-        this.name = name;
-        this.a_book = books;
-        this.surname = surname;
-    }
 }

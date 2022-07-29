@@ -3,14 +3,15 @@ package ru.otus.spring.dao;
 import ru.otus.spring.model.Books;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BooksDao {
 
-    int count();
+    Long count();
 
-    void insert(Books books);
+    Books insert(Books books);
 
-    Books getById(long id);
+    Optional<Books> getById(long id);
 
     List<Books> getAll();
 
