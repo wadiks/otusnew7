@@ -23,7 +23,7 @@ public class Genre {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(targetEntity = Books.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Books.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private List<Books> g_book;
 

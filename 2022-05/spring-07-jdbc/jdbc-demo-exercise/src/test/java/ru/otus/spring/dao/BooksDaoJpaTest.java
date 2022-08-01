@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.model.Books;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
@@ -57,7 +55,7 @@ class BooksDaoJpaTest {
     @Transactional()
     void shouldInsertBooks() {
         Books expectedBooks = new Books("Война и мир", 5, 9);
-        booksJpa.insert(expectedBooks);
+        booksJpa.save(expectedBooks);
         Books actualBooks = booksJpa.getById(expectedBooks.getId()).get();
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
     }
@@ -75,9 +73,11 @@ class BooksDaoJpaTest {
     @Test
     @Transactional
     void shouldCorrectDeleteBooksById() {
-        assertThatCode(() -> booksJpa.getById(FIRST_BOOKS_ID))
+        var book = booksJpa.getById(FIRST_BOOKS_ID);
+        assertThatCode(() -> book.get())
                 .doesNotThrowAnyException();
-        booksJpa.deleteById(FIRST_BOOKS_ID);
+
+        booksJpa.deleteById(book.get());
         Long actualBooksCount = booksJpa.count();
         assertThat(actualBooksCount).isEqualTo(7L);
     }

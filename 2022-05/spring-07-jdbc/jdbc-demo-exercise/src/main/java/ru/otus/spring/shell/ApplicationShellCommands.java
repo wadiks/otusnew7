@@ -16,6 +16,7 @@ import ru.otus.spring.sourse.ApplicationContextHolder;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @ShellComponent
 public class ApplicationShellCommands {
@@ -56,7 +57,9 @@ public class ApplicationShellCommands {
     @Transactional(readOnly = true)
     public void getAll() {
         var books = context().getBean(BooksDao.class);
-        bPrint(books.getAll());
+        var authors = context().getBean(AuthorsDao.class);
+        var genre = context().getBean(GenreDao.class);
+        bPrint(books.getAll(),authors.getAll(),genre.getAll());
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
@@ -79,7 +82,8 @@ public class ApplicationShellCommands {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
-        books.deleteById(number);
+        var book =  books.getById(number);
+        books.deleteById(book.get());
         System.out.println("Книга удалена");
     }
 
@@ -103,7 +107,11 @@ public class ApplicationShellCommands {
         aPrint(authors.getAll());
         System.out.println("Введите номер автора:");
         int aNumber = sc.nextInt();
-        books.update(new Books(number, name, gNumber, aNumber));
+        var eBook= books.getById(number).get();
+        if (null != name) eBook.setName(name);
+        if (0 != gNumber) eBook.setGenreId(gNumber);
+        if (0 != aNumber) eBook.setAuthorsId(aNumber);
+        books.save(eBook);
         System.out.println("Книга изменена");
     }
 
@@ -122,7 +130,7 @@ public class ApplicationShellCommands {
         aPrint(authors.getAll());
         System.out.println("Введите номер автора:");
         int aNumber = sc.nextInt();
-        books.insert(new Books(name, gNumber, aNumber));
+        books.save(new Books(name, gNumber, aNumber));
         System.out.println("Книга добавлена");
     }
 
@@ -191,7 +199,7 @@ public class ApplicationShellCommands {
         System.out.println("Введите номер комментария:");
         Long number = sc.nextLong();
         var commentById = comment.getById(number);
-        System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.getId(), commentById.getKText()));
+        System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.get().getId(), commentById.get().getKText()));
     }
 
     @ShellMethod(value = "Удалить коментарий", key = {"delCom", "deleteComment"})
@@ -202,7 +210,7 @@ public class ApplicationShellCommands {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
         int gNumber = sc.nextInt();
-        comment.deleteById(gNumber);
+        comment.deleteById(comment.getById(gNumber).get());
         System.out.println("Комментарий изменен");
     }
 
@@ -211,13 +219,15 @@ public class ApplicationShellCommands {
     public void updateComment() {
         var comment = context().getBean(CommentDao.class);
         cComment(comment.getAll());
-        Scanner sc = new Scanner(System.in);
+        final Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите изменить:");
         int gNumber = sc.nextInt();
         System.out.println("Введите комментарий:");
         sc.nextLine();
-        String com = sc.nextLine();
-        comment.updateNameById(gNumber, com);
+        final String com = sc.nextLine();
+        var fComment = comment.getById(gNumber).get();
+        fComment.setKText(com);
+        comment.save(fComment);
         System.out.println("Комментарий изменен");
     }
 
@@ -233,7 +243,7 @@ public class ApplicationShellCommands {
         System.out.println("Введите комментарий:");
         sc.nextLine();
         String com = sc.nextLine();
-        comment.insert(new Comment(com, gNumber));
+        comment.save(new Comment(com, gNumber));
         System.out.println("Комментарий добавлен ");
     }
 
@@ -248,6 +258,17 @@ public class ApplicationShellCommands {
             System.out.println(String.format("Номер книги = %s Наименование книги = %s  Номер в таблице жанров = %s  Номер в таблице авторов = %s  ",
                     b.getId(), b.getName(), b.getGenreId(), b.getAuthorsId()));
         });
+    }
+
+    private void bPrint(List<Books> books, List<Authors> authors, List<Genre> genres) {
+        books.forEach(b -> {
+                    var a = authors.stream().filter(authors1 -> authors1.getId() == b.getAuthorsId()).collect(Collectors.toList());
+                    var g = genres.stream().filter(authors1 -> authors1.getId() == b.getGenreId()).collect(Collectors.toList());
+                    System.out.println(String.format("Номер книги = %s Наименование книги = %s  Жанр = %s  Автор = %s  ",
+                            b.getId(), b.getName(), null != g.get(0) ? g.get(0).getName() : "",
+                            null != a.get(0) ? a.get(0).getSurname() + " " + a.get(0).getName() : ""));
+                }
+        );
     }
 
     private void aPrint(List<Authors> authors) {

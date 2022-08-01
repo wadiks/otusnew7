@@ -26,7 +26,7 @@ public class Authors {
     @Column(name = "surname")
     private String surname;
 
-    @OneToMany(targetEntity = Books.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Books.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "authors_id")
     private List<Books> a_book;
 

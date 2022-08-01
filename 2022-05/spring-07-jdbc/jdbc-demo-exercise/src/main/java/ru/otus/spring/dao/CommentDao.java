@@ -3,19 +3,19 @@ package ru.otus.spring.dao;
 import ru.otus.spring.model.Comment;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentDao {
 
     Long count();
 
-    Comment getById(long id);
+    Optional<Comment> getById(long id);
 
     List<Comment> getAll();
 
-    Comment insert(Comment books);
+    Comment save(Comment books);
 
-    void deleteById(long id);
+    void deleteById(Comment comment);
 
-    void updateNameById(long id, String kText);
 
 }

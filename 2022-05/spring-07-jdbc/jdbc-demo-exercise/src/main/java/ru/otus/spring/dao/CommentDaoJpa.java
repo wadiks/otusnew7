@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CommentDaoJpa implements CommentDao {
@@ -27,10 +28,8 @@ public class CommentDaoJpa implements CommentDao {
     }
 
     @Override
-    public Comment getById(long id) {
-        return em.createQuery("select  c from Comment c where c.id = :ID ", Comment.class)
-                .setParameter("ID", id)
-                .getSingleResult();
+    public Optional<Comment> getById(long id) {
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Override
@@ -39,8 +38,7 @@ public class CommentDaoJpa implements CommentDao {
                 .getResultList();
     }
 
-    @Override
-    public Comment insert(Comment comment) {
+    public Comment save(Comment comment) {
         if (comment.getId() <= 0) {
             em.persist(comment);
             return comment;
@@ -51,21 +49,8 @@ public class CommentDaoJpa implements CommentDao {
 
 
     @Override
-    public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Comment c " +
-                "where c.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void deleteById(Comment coment) {
+        em.remove(coment);
     }
 
-    @Override
-    public void updateNameById(long id, String kText) {
-        Query query = em.createQuery("update Comment c " +
-                "set c.kText = :kText " +
-                "where c.id = :id");
-        query.setParameter("kText", kText);
-        query.setParameter("id", id);
-        query.executeUpdate();
-    }
 }

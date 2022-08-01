@@ -25,7 +25,7 @@ public class BooksDaoJpa implements BooksDao {
     }
 
     @Override
-    public Books insert(Books books) {
+    public Books save(Books books) {
         if (books.getId() <= 0) {
             em.persist(books);
             return books;
@@ -41,34 +41,16 @@ public class BooksDaoJpa implements BooksDao {
 
     @Override
     public List<Books> getAll() {
-        return em.createQuery("select b from Books b join fetch b.comments ", Books.class)
+        return em.createQuery("select b from Books b left join fetch b.comments ", Books.class)
                 .getResultList();
     }
 
-
-
-    @OneToMany(targetEntity = Comment.class,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Comment.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
 
     @Override
-    public void deleteById(long id) {
-        Query query = em.createQuery("delete " +
-                "from Books b " +
-                "where b.id = :id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void deleteById(Books book) {
+         em.remove(book);
     }
 
-    @Override
-    public void update(Books books) {
-        Query query = em.createQuery("update Books b " +
-                "set b.authorsId = :authorsId, " +
-                " b.genreId = :genreId, " +
-                " b.name = :name " +
-                "where b.id = :id");
-        query.setParameter("authorsId", books.getAuthorsId());
-        query.setParameter("genreId", books.getGenreId());
-        query.setParameter("name", books.getName());
-        query.executeUpdate();
-    }
 }
