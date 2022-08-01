@@ -14,6 +14,7 @@ import ru.otus.spring.sourse.ApplicationContextHolder;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -47,7 +48,9 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Вывод всех книг", key = {"books", "bGetAll"})
     public void getAll() {
         var books = context().getBean(BooksDao.class);
-        System.out.println("Все книги = " + books.getAll());
+        var authors = context().getBean(AuthorsDao.class);
+        var genre = context().getBean(GenreDao.class);
+        bPrint(books.getAll(), authors.getAll(), genre.getAll());
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
@@ -175,6 +178,17 @@ public class ApplicationShellCommands {
             System.out.println(String.format("Номер книги = %s Наименование книги = %s  Номер в таблице жанров = %s  Номер в таблице авторов = %s  ",
                     b.getId(), b.getName(), b.getGenreId(), b.getAuthorsId()));
         });
+    }
+
+    private void bPrint(List<Books> books, List<Authors> authors, List<Genre> genres) {
+        books.forEach(b -> {
+                    var a = authors.stream().filter(authors1 -> authors1.getId() == b.getAuthorsId()).collect(Collectors.toList());
+                    var g = genres.stream().filter(authors1 -> authors1.getId() == b.getGenreId()).collect(Collectors.toList());
+                    System.out.println(String.format("Номер книги = %s Наименование книги = %s  Жанр = %s  Автор = %s  ",
+                            b.getId(), b.getName(), null != g.get(0) ? g.get(0).getName() : "",
+                            null != a.get(0) ? a.get(0).getSurname() + " " + a.get(0).getName() : ""));
+                }
+        );
     }
 
     private void aPrint(List<Authors> authors) {
