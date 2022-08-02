@@ -3,6 +3,8 @@ package ru.otus.spring.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,11 +25,16 @@ public class Books {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "genre_id")
-    private Integer genreId;
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private List<Genre> genres;
 
-    @Column(name = "authors_id")
-    private Integer authorsId;
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(targetEntity = Authors.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private List<Authors> authors;
+
 
     @OneToMany(targetEntity = Comment.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
@@ -35,13 +42,5 @@ public class Books {
 
     public Books(String name, Integer genreId, Integer authorsId) {
         this.name = name;
-        this.genreId = genreId;
-        this.authorsId = authorsId;
-    }
-    public Books(long id, String name, Integer genreId, Integer authorsId) {
-        this.id = id;
-        this.name = name;
-        this.genreId = genreId;
-        this.authorsId = authorsId;
     }
 }

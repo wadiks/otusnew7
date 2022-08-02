@@ -20,8 +20,8 @@ public class BooksDaoJpa implements BooksDao {
 
     @Override
     public Long count() {
-       var count =  em.createQuery("select  count(b) from Books b ", Long.class).getSingleResult();
-       return count == null ? 0L : count;
+        var count = em.createQuery("select  count(b) from Books b ", Long.class).getSingleResult();
+        return count == null ? 0L : count;
     }
 
     @Override
@@ -41,16 +41,16 @@ public class BooksDaoJpa implements BooksDao {
 
     @Override
     public List<Books> getAll() {
-        return em.createQuery("select b from Books b left join fetch b.comments ", Books.class)
+        return em.createQuery("select distinct b from Books b left join fetch b.comments c ", Books.class)
                 .getResultList();
     }
 
-    @OneToMany(targetEntity = Comment.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
 
     @Override
     public void deleteById(Books book) {
-         em.remove(book);
+        em.remove(book);
     }
 
 }

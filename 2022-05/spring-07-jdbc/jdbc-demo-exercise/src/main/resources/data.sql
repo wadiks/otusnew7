@@ -1,49 +1,55 @@
-insert into genre (id, name)
-values (1, 'Ужас');
-insert into genre (id, name)
-values (2, 'Детектив');
-insert into genre (id, name)
-values (3, 'Фантастика');
-insert into genre (id, name)
-values (4, 'Проза');
-insert into genre (id, name)
-values (5, 'Роман');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Мидлмарч');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'На маяк');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Большие надежды');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Джейн Эйр');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Грозовой перевал');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Франкенштейн');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Ярмарка Тщеславия');
+insert into books (id, name)
+values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Гордость и предубеждение');
 
-insert into authors (id, name, surname)
-values (1, 'Джордж', 'Элиот');
-insert into authors (id, name, surname)
-values (2, 'Вирджиния', 'Вулф');
-insert into authors (id, name, surname)
-values (3, 'Чарльз', 'Бронте');
-insert into authors (id, name, surname)
-values (4, 'Шарлотта', 'Бронте');
-insert into authors (id, name, surname)
-values (5, 'Эмили', 'Бронте');
-insert into authors (id, name, surname)
-values (6, 'Мэри', 'Шелли');
-insert into authors (id, name, surname)
-values (7, 'Уильям', 'Теккерей');
-insert into authors (id, name, surname)
-values (8, 'Джейн', 'Остин');
-insert into authors (id, name, surname)
-values (9, 'Лев', 'Толстой');
+insert into genre (id, name, book_id)
+values (1, 'Ужас', 6);
+insert into genre (id, name, book_id)
+values (2, 'Детектив', 2);
+insert into genre (id, name, book_id)
+values (3, 'Детектив', 4);
+insert into genre (id, name, book_id)
+values (4, 'Детектив', 8);
+insert into genre (id, name, book_id)
+values (5, 'Фантастика', 3);
+insert into genre (id, name, book_id)
+values (6, 'Фантастика', 5);
+insert into genre (id, name, book_id)
+values (7, 'Фантастика', 7);
+insert into genre (id, name, book_id)
+values (8, 'Проза', 2);
+insert into genre (id, name, book_id)
+values (9, 'Проза', 3);
 
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Мидлмарч', 2, 1);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'На маяк', 4, 2);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Большие надежды', 4, 3);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Джейн Эйр', 2, 4);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Грозовой перевал', 3, 5);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Франкенштейн', 1, 6);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Ярмарка Тщеславия', 3, 7);
-insert into books (id, name, genre_id, authors_id)
-values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Гордость и предубеждение', 2, 8);
+insert into authors (id, name, surname, book_id)
+values (1, 'Джордж', 'Элиот', 1);
+insert into authors (id, name, surname, book_id)
+values (2, 'Вирджиния', 'Вулф', 2);
+insert into authors (id, name, surname, book_id)
+values (3, 'Чарльз', 'Бронте', 3);
+insert into authors (id, name, surname, book_id)
+values (4, 'Шарлотта', 'Бронте', 4);
+insert into authors (id, name, surname, book_id)
+values (5, 'Эмили', 'Бронте', 5);
+insert into authors (id, name, surname, book_id)
+values (6, 'Мэри', 'Шелли', 6);
+insert into authors (id, name, surname, book_id)
+values (7, 'Уильям', 'Теккерей', 7);
+insert into authors (id, name, surname, book_id)
+values (8, 'Джейн', 'Остин', 8);
 
 insert into comment (id, ktext, book_id)
 values (NEXT VALUE FOR COMMENT_SEQ_ID, 'Книга ничего так страшновать.', 6);

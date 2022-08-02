@@ -1,6 +1,6 @@
 package ru.otus.spring.shell;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,6 @@ import ru.otus.spring.model.Authors;
 import ru.otus.spring.model.Books;
 import ru.otus.spring.model.Comment;
 import ru.otus.spring.model.Genre;
-import ru.otus.spring.sourse.ApplicationContextHolder;
 
 import java.util.List;
 import java.util.Scanner;
@@ -20,6 +19,20 @@ import java.util.stream.Collectors;
 
 @ShellComponent
 public class ApplicationShellCommands {
+
+
+    AuthorsDao authorsDao;
+    BooksDao booksDao;
+    CommentDao commentDao;
+    GenreDao genreDao;
+
+    @Autowired
+    public ApplicationShellCommands(AuthorsDao authorsDao, BooksDao booksDao, CommentDao commentDao, GenreDao genreDao) {
+        this.authorsDao = authorsDao;
+        this.booksDao = booksDao;
+        this.commentDao = commentDao;
+        this.genreDao = genreDao;
+    }
 
     @ShellMethod(value = "Help command", key = {"?"})
     public void help() {
@@ -49,88 +62,76 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Количество книг", key = {"c", "count"})
     @Transactional(readOnly = true)
     public void count() {
-        var books = context().getBean(BooksDao.class);
-        System.out.println("Количество книг = " + books.count());
+        System.out.println("Количество книг = " + booksDao.count());
     }
 
     @ShellMethod(value = "Вывод всех книг", key = {"books", "bGetAll"})
     @Transactional(readOnly = true)
     public void getAll() {
-        var books = context().getBean(BooksDao.class);
-        var authors = context().getBean(AuthorsDao.class);
-        var genre = context().getBean(GenreDao.class);
-        bPrint(books.getAll(),authors.getAll(),genre.getAll());
+      bPrint(booksDao.getAll());//,authorsDao.getAll(),genreDao.getAll());
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
     @Transactional(readOnly = true)
     public void getBookById() {
-        var books = context().getBean(BooksDao.class);
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
-        var book = books.getById(number);
+        var book = booksDao.getById(number);
         System.out.println(String.format("Номер книги = %s Наименование книги = %s", book.get().getId(), book.get().getName()));
     }
 
     @ShellMethod(value = "Удалить книгу", key = {"del", "delete"})
     @Transactional()
     public void delBook() {
-        var books = context().getBean(BooksDao.class);
         System.out.println("Какую книгу хотите удалить");
-        bPrint(books.getAll());
+        bPrint(booksDao.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
-        var book =  books.getById(number);
-        books.deleteById(book.get());
+        var book = booksDao.getById(number);
+        booksDao.deleteById(book.get());
         System.out.println("Книга удалена");
     }
 
     @ShellMethod(value = "Изменить название книги", key = {"rename"})
     @Transactional()
     public void updateBook() {
-        var books = context().getBean(BooksDao.class);
-        var authors = context().getBean(AuthorsDao.class);
-        var genre = context().getBean(GenreDao.class);
         System.out.println("Какую книгу хотите изменить");
-        bPrint(books.getAll());
+        bPrint(booksDao.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
         System.out.println("Введите название книги:");
         sc.nextLine();
         String name = sc.nextLine();
-        gPrint(genre.getAll());
+        gPrint(genreDao.getAll());
         System.out.println("Введите номер жанра:");
         int gNumber = sc.nextInt();
-        aPrint(authors.getAll());
+        aPrint(authorsDao.getAll());
         System.out.println("Введите номер автора:");
         int aNumber = sc.nextInt();
-        var eBook= books.getById(number).get();
+        var eBook = booksDao.getById(number).get();
         if (null != name) eBook.setName(name);
-        if (0 != gNumber) eBook.setGenreId(gNumber);
-        if (0 != aNumber) eBook.setAuthorsId(aNumber);
-        books.save(eBook);
+     //   if (0 != gNumber) eBook.setGenreId(gNumber);
+       // if (0 != aNumber) eBook.setAuthorsId(aNumber);
+        booksDao.save(eBook);
         System.out.println("Книга изменена");
     }
 
     @ShellMethod(value = "Добавить книгу", key = {"ins", "insert"})
     @Transactional()
     public void insertBook() {
-        var books = context().getBean(BooksDao.class);
-        var authors = context().getBean(AuthorsDao.class);
-        var genre = context().getBean(GenreDao.class);
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите название книги:");
         String name = sc.nextLine();
-        gPrint(genre.getAll());
+        gPrint(genreDao.getAll());
         System.out.println("Введите номер жанра:");
         int gNumber = sc.nextInt();
-        aPrint(authors.getAll());
+        aPrint(authorsDao.getAll());
         System.out.println("Введите номер автора:");
         int aNumber = sc.nextInt();
-        books.save(new Books(name, gNumber, aNumber));
+        booksDao.save(new Books(name, gNumber, aNumber));
         System.out.println("Книга добавлена");
     }
 
@@ -139,26 +140,23 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Посмотреть всех аторов", key = {"authors", "aGetAll"})
     @Transactional(readOnly = true)
     public void getAutors() {
-        var autors = context().getBean(AuthorsDao.class);
         System.out.println("Выведены все авторы книг = ");
-        aPrint(autors.getAll());
+        aPrint(authorsDao.getAll());
     }
 
     @ShellMethod(value = "Количество авторов", key = {"a", "aCount"})
     @Transactional(readOnly = true)
     public void getAutorsCount() {
-        var autors = context().getBean(AuthorsDao.class);
-        System.out.println("Количествол авторов = " + autors.count());
+        System.out.println("Количествол авторов = " + authorsDao.count());
     }
 
     @ShellMethod(value = "Найти автора по id", key = {"aId", "aGetId"})
     @Transactional(readOnly = true)
     public void getAutorsGetId() {
-        var autors = context().getBean(AuthorsDao.class);
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер автора:");
         int number = sc.nextInt();
-        var author = autors.getById(number);
+        var author = authorsDao.getById(number);
         System.out.println(String.format("Номер автора = %s Назвавние автора = %s %s", author.get().getId(), author.get().getName(), author.get().getSurname()));
     }
 
@@ -167,26 +165,23 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Посмотреть все жанры", key = {"genres", "gGetAll"})
     @Transactional(readOnly = true)
     public void getGenre() {
-        var genre = context().getBean(GenreDao.class);
         System.out.println("Все жанры книг = ");
-        gPrint(genre.getAll());
+        gPrint(genreDao.getAll());
     }
 
     @ShellMethod(value = "Количество жанров", key = {"g", "gCount"})
     @Transactional(readOnly = true)
     public void getGenreCount() {
-        var genre = context().getBean(GenreDao.class);
-        System.out.println("Количество жанров книг = " + genre.count());
+        System.out.println("Количество жанров книг = " + genreDao.count());
     }
 
     @ShellMethod(value = "Найти жанр по id", key = {"gId", "gGetId"})
     @Transactional(readOnly = true)
     public void getGenreGetId() {
-        var genre = context().getBean(GenreDao.class);
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер жанра:");
         int number = sc.nextInt();
-        var eGenre = genre.getById(number);
+        var eGenre = genreDao.getById(number);
         System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", eGenre.get().getId(), eGenre.get().getName()));
     }
 
@@ -194,81 +189,72 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Найти коментарий по id", key = {"cId", "cGetId"})
     @Transactional(readOnly = true)
     public void getCommentById() {
-        var comment = context().getBean(CommentDao.class);
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария:");
         Long number = sc.nextLong();
-        var commentById = comment.getById(number);
+        var commentById = commentDao.getById(number);
         System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.get().getId(), commentById.get().getKText()));
     }
 
     @ShellMethod(value = "Удалить коментарий", key = {"delCom", "deleteComment"})
     @Transactional()
     public void delComment() {
-        var comment = context().getBean(CommentDao.class);
-        cComment(comment.getAll());
+        cComment(commentDao.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
         int gNumber = sc.nextInt();
-        comment.deleteById(comment.getById(gNumber).get());
+        commentDao.deleteById(commentDao.getById(gNumber).get());
         System.out.println("Комментарий изменен");
     }
 
     @ShellMethod(value = "Изменить коментарий", key = {"cRename"})
     @Transactional()
     public void updateComment() {
-        var comment = context().getBean(CommentDao.class);
-        cComment(comment.getAll());
+        cComment(commentDao.getAll());
         final Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите изменить:");
         int gNumber = sc.nextInt();
         System.out.println("Введите комментарий:");
         sc.nextLine();
         final String com = sc.nextLine();
-        var fComment = comment.getById(gNumber).get();
+        var fComment = commentDao.getById(gNumber).get();
         fComment.setKText(com);
-        comment.save(fComment);
+        commentDao.save(fComment);
         System.out.println("Комментарий изменен");
     }
 
     @ShellMethod(value = "Добавить комментарий", key = {"insCom", "insertComment"})
     @Transactional()
     public void insertComment() {
-        var comment = context().getBean(CommentDao.class);
-        var books = context().getBean(BooksDao.class);
-        bPrint(books.getAll());
+        bPrint(booksDao.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги в которую хотите добавить комментарий:");
         int gNumber = sc.nextInt();
         System.out.println("Введите комментарий:");
         sc.nextLine();
         String com = sc.nextLine();
-        comment.save(new Comment(com, gNumber));
+        commentDao.save(new Comment(com, gNumber));
         System.out.println("Комментарий добавлен ");
     }
 
-    public ApplicationContext context() {
-        var ctx = ApplicationContextHolder.getApplicationContext();
-        if (null == ctx) System.out.println("Не загрузился контекст");
-        return ctx;
+    @ShellMethod(value = "Количество коментариев.", key = {"cc", "countComment"})
+    public void cCount() {
+        System.out.println("Количество коментариев = " + commentDao.count());
+    }
+
+    @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
+    public void cGetAll() {
+        cComment(commentDao.getAll());
     }
 
     private void bPrint(List<Books> books) {
         books.forEach(b -> {
-            System.out.println(String.format("Номер книги = %s Наименование книги = %s  Номер в таблице жанров = %s  Номер в таблице авторов = %s  ",
-                    b.getId(), b.getName(), b.getGenreId(), b.getAuthorsId()));
+            System.out.println(String.format("Номер книги = %s Наименование книги = %s   ",
+                    b.getId(), b.getName()));
+            gPrint(b.getGenres());
+            aPrint(b.getAuthors());
+            System.out.println("------Следующая книга --------");
         });
-    }
-
-    private void bPrint(List<Books> books, List<Authors> authors, List<Genre> genres) {
-        books.forEach(b -> {
-                    var a = authors.stream().filter(authors1 -> authors1.getId() == b.getAuthorsId()).collect(Collectors.toList());
-                    var g = genres.stream().filter(authors1 -> authors1.getId() == b.getGenreId()).collect(Collectors.toList());
-                    System.out.println(String.format("Номер книги = %s Наименование книги = %s  Жанр = %s  Автор = %s  ",
-                            b.getId(), b.getName(), null != g.get(0) ? g.get(0).getName() : "",
-                            null != a.get(0) ? a.get(0).getSurname() + " " + a.get(0).getName() : ""));
-                }
-        );
     }
 
     private void aPrint(List<Authors> authors) {
@@ -289,17 +275,6 @@ public class ApplicationShellCommands {
         });
     }
 
-    @ShellMethod(value = "Количество коментариев.", key = {"cc", "countComment"})
-    public void cCount() {
-        var comment = context().getBean(CommentDao.class);
-        System.out.println("Количество коментариев = " + comment.count());
-    }
-
-    @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
-    public void cGetAll() {
-        var comment = context().getBean(CommentDao.class);
-        cComment(comment.getAll());
-    }
 }
 
 
