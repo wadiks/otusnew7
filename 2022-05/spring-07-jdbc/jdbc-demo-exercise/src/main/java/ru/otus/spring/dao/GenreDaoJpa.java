@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 public class GenreDaoJpa implements GenreDao {
 
-
     @PersistenceContext
     private final EntityManager em;
 
@@ -35,5 +34,4 @@ public class GenreDaoJpa implements GenreDao {
         return em.createQuery("select  g from Genre g ", Genre.class)
                 .getResultList();
     }
-
 }

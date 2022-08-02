@@ -15,11 +15,9 @@ import ru.otus.spring.model.Genre;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 @ShellComponent
 public class ApplicationShellCommands {
-
 
     AuthorsDao authorsDao;
     BooksDao booksDao;
@@ -68,7 +66,7 @@ public class ApplicationShellCommands {
     @ShellMethod(value = "Вывод всех книг", key = {"books", "bGetAll"})
     @Transactional(readOnly = true)
     public void getAll() {
-      bPrint(booksDao.getAll());//,authorsDao.getAll(),genreDao.getAll());
+        bPrint(booksDao.getAll());
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
@@ -113,8 +111,6 @@ public class ApplicationShellCommands {
         int aNumber = sc.nextInt();
         var eBook = booksDao.getById(number).get();
         if (null != name) eBook.setName(name);
-     //   if (0 != gNumber) eBook.setGenreId(gNumber);
-       // if (0 != aNumber) eBook.setAuthorsId(aNumber);
         booksDao.save(eBook);
         System.out.println("Книга изменена");
     }

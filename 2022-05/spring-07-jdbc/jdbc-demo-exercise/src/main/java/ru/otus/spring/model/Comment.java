@@ -3,6 +3,7 @@ package ru.otus.spring.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import javax.persistence.*;
 public class Comment {
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuSeq")
-    @SequenceGenerator(name = "menuSeq",  allocationSize = 1, sequenceName = "COMMENT_SEQ_ID")
+    @SequenceGenerator(name = "menuSeq", allocationSize = 1, sequenceName = "COMMENT_SEQ_ID")
     @Id
     @Column(name = "ID")
     private long id;

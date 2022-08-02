@@ -12,14 +12,12 @@ import java.util.Optional;
 @Repository
 public class CommentDaoJpa implements CommentDao {
 
-
     @PersistenceContext
     private final EntityManager em;
 
     public CommentDaoJpa(EntityManager em) {
         this.em = em;
     }
-
 
     @Override
     public Long count() {
@@ -46,7 +44,6 @@ public class CommentDaoJpa implements CommentDao {
             return em.merge(comment);
         }
     }
-
 
     @Override
     public void deleteById(Comment coment) {

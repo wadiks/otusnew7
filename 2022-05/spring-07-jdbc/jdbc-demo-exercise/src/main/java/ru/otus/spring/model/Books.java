@@ -35,7 +35,6 @@ public class Books {
     @JoinColumn(name = "book_id")
     private List<Authors> authors;
 
-
     @OneToMany(targetEntity = Comment.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private List<Comment> comments;
