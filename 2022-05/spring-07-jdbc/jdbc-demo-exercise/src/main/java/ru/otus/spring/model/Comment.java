@@ -16,18 +16,15 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuSeq")
     @SequenceGenerator(name = "menuSeq", allocationSize = 1, sequenceName = "COMMENT_SEQ_ID")
     @Id
-    @Column(name = "ID")
     private long id;
 
-    @Column(name = "KTEXT")
-    private String kText;
+    private String ktext;
 
-    @Column(name = "BOOK_ID")
-    private long bookId;
+    private long book_id;
 
-    public Comment(String kText, long bookId) {
-        this.kText = kText;
-        this.bookId = bookId;
+    public Comment(String ktext, long book_id) {
+        this.ktext = ktext;
+        this.book_id = book_id;
     }
 
 }

@@ -19,7 +19,6 @@ public class Books {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "menuSeq")
     @SequenceGenerator(name = "menuSeq",  allocationSize = 1, sequenceName = "BOOKS_SEQ_ID")
-    @Column(name = "id")
     private long id;
 
     @Column(name = "name")
@@ -39,7 +38,7 @@ public class Books {
     @JoinColumn(name = "book_id")
     private List<Comment> comments;
 
-    public Books(String name, Integer genreId, Integer authorsId) {
+    public Books(String name) {
         this.name = name;
     }
 }

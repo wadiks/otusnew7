@@ -54,7 +54,7 @@ class BooksDaoJpaTest {
     @Test
     @Transactional()
     void shouldInsertBooks() {
-        Books expectedBooks = new Books("Война и мир", 5, 9);
+        Books expectedBooks = new Books("Война и мир");
         booksJpa.save(expectedBooks);
         Books actualBooks = booksJpa.getById(expectedBooks.getId()).get();
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
