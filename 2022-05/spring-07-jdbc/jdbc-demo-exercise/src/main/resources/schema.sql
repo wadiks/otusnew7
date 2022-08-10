@@ -13,8 +13,16 @@ DROP TABLE IF EXISTS GENRE;
 CREATE TABLE GENRE
 (
     ID      BIGINT PRIMARY KEY,
-    NAME    VARCHAR(255),
-    BOOK_ID BIGINT references BOOKS (id)
+    NAME    VARCHAR(255)
+
+);
+
+DROP TABLE IF EXISTS BOOKS_GENRE;
+create table BOOKS_GENRE
+(
+    BOOKS_ID BIGINT references BOOKS (id) on delete cascade,
+    GENRE_ID  BIGINT references GENRE (id),
+    primary key (BOOKS_ID, GENRE_ID)
 );
 
 DROP TABLE IF EXISTS AUTHORS;

@@ -26,7 +26,7 @@ public class CommentDaoJpa implements CommentDao {
     }
 
     @Override
-    public Optional<Comment> getById(long id) {
+    public Optional<Comment> getById(int id) {
         return Optional.ofNullable(em.find(Comment.class, id));
     }
 

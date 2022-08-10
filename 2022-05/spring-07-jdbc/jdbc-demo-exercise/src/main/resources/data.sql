@@ -15,24 +15,24 @@ values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Ярмарка Тщеславия');
 insert into books (id, name)
 values (NEXT VALUE FOR BOOKS_SEQ_ID, 'Гордость и предубеждение');
 
-insert into genre (id, name, book_id)
-values (1, 'Ужас', 6);
-insert into genre (id, name, book_id)
-values (2, 'Детектив', 2);
-insert into genre (id, name, book_id)
-values (3, 'Детектив', 4);
-insert into genre (id, name, book_id)
-values (4, 'Детектив', 8);
-insert into genre (id, name, book_id)
-values (5, 'Фантастика', 3);
-insert into genre (id, name, book_id)
-values (6, 'Фантастика', 5);
-insert into genre (id, name, book_id)
-values (7, 'Фантастика', 7);
-insert into genre (id, name, book_id)
-values (8, 'Проза', 2);
-insert into genre (id, name, book_id)
-values (9, 'Проза', 3);
+insert into genre (id, name)
+values (1, 'Ужас');
+insert into genre (id, name)
+values (2, 'Детектив');
+insert into genre (id, name)
+values (3, 'Фантастика');
+insert into genre (id, name)
+values (4, 'Проза');
+
+insert into books_genre (books_id, genre_id)
+values (1, 3),
+       (2, 2),(2, 3),
+       (3, 4),(3, 2),
+       (4, 3),
+       (5, 2),
+       (6, 1),
+       (7, 3),
+       (7, 2);
 
 insert into authors (id, name, surname, book_id)
 values (1, 'Джордж', 'Элиот', 1);

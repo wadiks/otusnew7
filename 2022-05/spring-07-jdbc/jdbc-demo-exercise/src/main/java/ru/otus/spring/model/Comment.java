@@ -20,11 +20,12 @@ public class Comment {
 
     private String ktext;
 
-    private long book_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    private Books book_i;
 
     public Comment(String ktext, long book_id) {
         this.ktext = ktext;
-        this.book_id = book_id;
     }
 
 }

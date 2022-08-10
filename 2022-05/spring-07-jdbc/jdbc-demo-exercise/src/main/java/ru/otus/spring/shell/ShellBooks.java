@@ -9,6 +9,7 @@ import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.model.Books;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Service
@@ -41,30 +42,27 @@ public class ShellBooks implements IBooks {
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
-    @Transactional(readOnly = true)
     public void getBookById() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
-        var book = booksDao.getById(number);
+        var book = findById(number);
         System.out.println(String.format("Номер книги = %s Наименование книги = %s", book.get().getId(), book.get().getName()));
     }
 
     @ShellMethod(value = "Удалить книгу", key = {"del", "delete"})
-    @Transactional()
     public void delBook() {
         System.out.println("Какую книгу хотите удалить");
         bPrint(booksDao.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
-        var book = booksDao.getById(number);
-        booksDao.deleteById(book.get());
+        var book = findById(number);
+        deleteByid(book.get());
         System.out.println("Книга удалена");
     }
 
     @ShellMethod(value = "Изменить название книги", key = {"rename"})
-    @Transactional()
     public void updateBook() {
         System.out.println("Какую книгу хотите изменить");
         bPrint(booksDao.getAll());
@@ -75,19 +73,18 @@ public class ShellBooks implements IBooks {
         sc.nextLine();
         String name = sc.nextLine();
         genre.gPrint(genreDao.getAll());
-        var eBook = booksDao.getById(number).get();
+        var eBook = findById(number).get();
         if (null != name) eBook.setName(name);
-        booksDao.save(eBook);
+        sav(eBook);
         System.out.println("Книга изменена");
     }
 
     @ShellMethod(value = "Добавить книгу", key = {"ins", "insert"})
-    @Transactional()
     public void insertBook() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите название книги:");
         String name = sc.nextLine();
-        booksDao.save(new Books(name));
+        sav(new Books(name));
         System.out.println("Книга добавлена");
     }
 
@@ -102,4 +99,18 @@ public class ShellBooks implements IBooks {
     }
 
 
+    @Transactional(readOnly = true)
+    public Optional<Books> findById(int number){
+        return booksDao.getById(number);
+    }
+
+    @Transactional()
+    public void deleteByid(Books books){
+        booksDao.deleteById(books);
+    }
+
+    @Transactional()
+    public void sav(Books books){
+        booksDao.save(books);
+    }
 }

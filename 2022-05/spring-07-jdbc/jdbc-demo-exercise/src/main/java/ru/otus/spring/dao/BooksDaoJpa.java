@@ -41,7 +41,7 @@ public class BooksDaoJpa implements BooksDao {
 
     @Override
     public List<Books> getAll() {
-        return em.createQuery("select distinct b from Books b left join fetch b.comments c ", Books.class)
+        return em.createQuery("select b from Books b", Books.class)
                 .getResultList();
     }
 

@@ -9,7 +9,7 @@ public interface CommentDao {
 
     Long count();
 
-    Optional<Comment> getById(long id);
+    Optional<Comment> getById(int id);
 
     List<Comment> getAll();
 

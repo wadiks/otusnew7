@@ -19,5 +19,4 @@ public class Genre {
 
     private String name;
 
-    private long book_Id;
 }

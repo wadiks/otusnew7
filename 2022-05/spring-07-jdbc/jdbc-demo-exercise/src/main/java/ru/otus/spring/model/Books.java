@@ -25,8 +25,9 @@ public class Books {
     private String name;
 
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "books_genre", joinColumns = @JoinColumn(name = "books_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
     @Fetch(FetchMode.SUBSELECT)
@@ -34,6 +35,7 @@ public class Books {
     @JoinColumn(name = "book_id")
     private List<Authors> authors;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(targetEntity = Comment.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private List<Comment> comments;

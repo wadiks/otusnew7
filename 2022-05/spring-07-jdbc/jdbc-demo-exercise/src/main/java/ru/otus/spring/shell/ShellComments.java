@@ -9,6 +9,7 @@ import ru.otus.spring.dao.CommentDao;
 import ru.otus.spring.model.Comment;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Service
@@ -26,28 +27,25 @@ public class ShellComments implements IComments {
     }
 
     @ShellMethod(value = "Найти коментарий по id", key = {"cId", "cGetId"})
-    @Transactional(readOnly = true)
     public void getCommentById() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария:");
-        Long number = sc.nextLong();
-        var commentById = commentDao.getById(number);
+        int number = sc.nextInt();
+        var commentById = findById(number);
         System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.get().getId(), commentById.get().getKtext()));
     }
 
     @ShellMethod(value = "Удалить коментарий", key = {"delCom", "deleteComment"})
-    @Transactional()
     public void delComment() {
         cComment(commentDao.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
         int gNumber = sc.nextInt();
-        commentDao.deleteById(commentDao.getById(gNumber).get());
+        deleteByid(findById(gNumber).get());
         System.out.println("Комментарий изменен");
     }
 
     @ShellMethod(value = "Изменить коментарий", key = {"cRename"})
-    @Transactional()
     public void updateComment() {
         cComment(commentDao.getAll());
         final Scanner sc = new Scanner(System.in);
@@ -56,14 +54,13 @@ public class ShellComments implements IComments {
         System.out.println("Введите комментарий:");
         sc.nextLine();
         final String com = sc.nextLine();
-        var fComment = commentDao.getById(gNumber).get();
+        var fComment = findById(gNumber).get();
         fComment.setKtext(com);
-        commentDao.save(fComment);
+        sav(fComment);
         System.out.println("Комментарий изменен");
     }
 
     @ShellMethod(value = "Добавить комментарий", key = {"insCom", "insertComment"})
-    @Transactional()
     public void insertComment() {
         iBooks.bPrint(booksDao.getAll());
         Scanner sc = new Scanner(System.in);
@@ -72,7 +69,7 @@ public class ShellComments implements IComments {
         System.out.println("Введите комментарий:");
         sc.nextLine();
         String com = sc.nextLine();
-        commentDao.save(new Comment(com, gNumber));
+        sav(new Comment(com, gNumber));
         System.out.println("Комментарий добавлен ");
     }
 
@@ -81,6 +78,7 @@ public class ShellComments implements IComments {
         System.out.println("Количество коментариев = " + commentDao.count());
     }
 
+    @Transactional(readOnly = true)
     @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
     public void cGetAll() {
         cComment(commentDao.getAll());
@@ -89,8 +87,23 @@ public class ShellComments implements IComments {
 
     public void cComment(List<Comment> comment) {
         comment.forEach(c -> {
-            System.out.println(String.format("Номер комментария = %s Комментарий = %s", c.getId(), c.getKtext()));
+            System.out.println(String.format(" Название книги %s Номер комментария = %s Комментарий = %s", c.getBook_i().getName(), c.getId(), c.getKtext()));
         });
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Comment> findById(int number){
+        return commentDao.getById(number);
+    }
+
+    @Transactional()
+    public void deleteByid(Comment com){
+        commentDao.deleteById(com);
+    }
+
+    @Transactional()
+    public void sav(Comment com){
+        commentDao.save(com);
     }
 
 }

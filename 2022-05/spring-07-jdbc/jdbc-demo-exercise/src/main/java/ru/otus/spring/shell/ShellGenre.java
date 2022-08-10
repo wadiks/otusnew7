@@ -8,6 +8,7 @@ import ru.otus.spring.dao.GenreDao;
 import ru.otus.spring.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Service
@@ -34,12 +35,12 @@ public class ShellGenre implements IGenre {
     }
 
     @ShellMethod(value = "Найти жанр по id", key = {"gId", "gGetId"})
-    @Transactional(readOnly = true)
+
     public void getGenreGetId() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер жанра:");
         int number = sc.nextInt();
-        var eGenre = genreDao.getById(number);
+        final var eGenre = findById(number);
         System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", eGenre.get().getId(), eGenre.get().getName()));
     }
 
@@ -47,6 +48,11 @@ public class ShellGenre implements IGenre {
         genres.forEach(g -> {
             System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", g.getId(), g.getName()));
         });
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Genre> findById(int number){
+        return genreDao.getById(number);
     }
 
 

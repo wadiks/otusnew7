@@ -8,15 +8,17 @@ import ru.otus.spring.dao.AuthorsDao;
 import ru.otus.spring.model.Authors;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @Service
 @ShellComponent
 public class ShellAuthors implements IAuthors {
 
-    final  AuthorsDao authorsDao;
+    final AuthorsDao authorsDao;
 
     public ShellAuthors(AuthorsDao authorsDao) {
+
         this.authorsDao = authorsDao;
     }
 
@@ -30,16 +32,16 @@ public class ShellAuthors implements IAuthors {
     @ShellMethod(value = "Количество авторов", key = {"a", "aCount"})
     @Transactional(readOnly = true)
     public void getAutorsCount() {
+
         System.out.println("Количествол авторов = " + authorsDao.count());
     }
 
     @ShellMethod(value = "Найти автора по id", key = {"aId", "aGetId"})
-    @Transactional(readOnly = true)
     public void getAutorsGetId() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер автора:");
         int number = sc.nextInt();
-        var author = authorsDao.getById(number);
+        var author = findById(number);
         System.out.println(String.format("Номер автора = %s Назвавние автора = %s %s", author.get().getId(), author.get().getName(), author.get().getSurname()));
     }
 
@@ -48,6 +50,11 @@ public class ShellAuthors implements IAuthors {
         authors.forEach(a -> {
             System.out.println(String.format("Номер автора = %s Назвавние автора = %s %s", a.getId(), a.getName(), a.getSurname()));
         });
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Authors> findById(int number) {
+        return authorsDao.getById(number);
     }
 
 }
