@@ -13,7 +13,7 @@ public interface CommentDao {
 
     List<Comment> getAll();
 
-    Comment save(Comment books);
+    Comment save(Comment comment);
 
     void deleteById(Comment comment);
 

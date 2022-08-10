@@ -2,38 +2,28 @@ package ru.otus.spring.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.dao.AuthorsDao;
-import ru.otus.spring.model.Authors;
+import ru.otus.spring.service.ServiceAuthor;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
-@Service
 @ShellComponent
-public class ShellAuthors implements IAuthors {
+public class ShellAuthors implements SAuthor {
 
-    final AuthorsDao authorsDao;
+    final ServiceAuthor serviceAuthor;
 
-    public ShellAuthors(AuthorsDao authorsDao) {
-
-        this.authorsDao = authorsDao;
+    public ShellAuthors(ServiceAuthor serviceAuthor) {
+        this.serviceAuthor = serviceAuthor;
     }
 
     @ShellMethod(value = "Посмотреть всех аторов", key = {"authors", "aGetAll"})
-    @Transactional(readOnly = true)
     public void getAutors() {
         System.out.println("Выведены все авторы книг = ");
-        aPrint(authorsDao.getAll());
+        serviceAuthor.aPrint(serviceAuthor.getAll());
     }
 
     @ShellMethod(value = "Количество авторов", key = {"a", "aCount"})
-    @Transactional(readOnly = true)
     public void getAutorsCount() {
-
-        System.out.println("Количествол авторов = " + authorsDao.count());
+        System.out.println("Количествол авторов = " + serviceAuthor.count());
     }
 
     @ShellMethod(value = "Найти автора по id", key = {"aId", "aGetId"})
@@ -41,20 +31,8 @@ public class ShellAuthors implements IAuthors {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер автора:");
         int number = sc.nextInt();
-        var author = findById(number);
+        var author = serviceAuthor.getById(number);
         System.out.println(String.format("Номер автора = %s Назвавние автора = %s %s", author.get().getId(), author.get().getName(), author.get().getSurname()));
-    }
-
-
-    public void aPrint(List<Authors> authors) {
-        authors.forEach(a -> {
-            System.out.println(String.format("Номер автора = %s Назвавние автора = %s %s", a.getId(), a.getName(), a.getSurname()));
-        });
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<Authors> findById(int number) {
-        return authorsDao.getById(number);
     }
 
 }
