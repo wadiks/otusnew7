@@ -45,9 +45,6 @@ public class BooksDaoJpa implements BooksDao {
                 .getResultList();
     }
 
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-
     @Override
     public void deleteById(Books book) {
         em.remove(book);
