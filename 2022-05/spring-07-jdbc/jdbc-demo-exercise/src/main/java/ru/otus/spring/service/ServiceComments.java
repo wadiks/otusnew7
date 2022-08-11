@@ -9,7 +9,7 @@ public interface ServiceComments {
 
     Long count();
 
-    Optional<Comment> getById(int id);
+    Optional<Comment> getById(long id);
 
     List<Comment> getAll();
 

@@ -43,7 +43,7 @@ public class ShellBooks implements SBooks {
         serviceBooks.bPrint(serviceBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
-        int number = sc.nextInt();
+        long number = sc.nextLong();
         serviceBooks.deleteById(number);
         System.out.println("Книга удалена");
     }

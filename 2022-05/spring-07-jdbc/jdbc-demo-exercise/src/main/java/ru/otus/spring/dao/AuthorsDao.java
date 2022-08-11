@@ -1,16 +1,9 @@
 package ru.otus.spring.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import ru.otus.spring.model.Authors;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface AuthorsDao {
-
-    Long count();
-
-    Optional<Authors> getById(long id);
-
-    List<Authors> getAll();
+public interface AuthorsDao extends JpaRepository<Authors, Long>, JpaSpecificationExecutor<Authors> {
 
 }

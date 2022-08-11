@@ -14,23 +14,19 @@ public class ServiceCommentsImp implements ServiceComments {
     final CommentDao commentDao;
 
     public ServiceCommentsImp(CommentDao commentDao) {
-
         this.commentDao = commentDao;
     }
 
     public Long count() {
-
         return commentDao.count();
     }
 
-    public Optional<Comment> getById(int id) {
-
-        return commentDao.getById(id);
+    public Optional<Comment> getById(long id) {
+        return commentDao.findById(id);
     }
 
     public List<Comment> getAll() {
-
-        return commentDao.getAll();
+        return commentDao.findAll();
     }
 
     @Transactional()
@@ -49,8 +45,7 @@ public class ServiceCommentsImp implements ServiceComments {
 
     @Transactional()
     public void deleteById(Comment comment) {
-        commentDao.deleteById(comment);
-
+        commentDao.delete(comment);
     }
 
     public void cComment(List<Comment> comment) {

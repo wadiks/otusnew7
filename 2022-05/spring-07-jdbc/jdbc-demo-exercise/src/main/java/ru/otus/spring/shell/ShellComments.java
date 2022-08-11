@@ -33,7 +33,7 @@ public class ShellComments implements SComments {
         serviceComments.cComment(serviceComments.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
-        int gNumber = sc.nextInt();
+        long gNumber = sc.nextLong();
         serviceComments.deleteById(serviceComments.getById(gNumber).get());
         System.out.println("Комментарий изменен");
     }
@@ -69,5 +69,9 @@ public class ShellComments implements SComments {
         serviceComments.cComment(serviceComments.getAll());
     }
 
+    @ShellMethod(value = "Количество коментариев", key = {"с", "сCount"})
+    public void getCommentCount() {
+        System.out.println("Количество коментариев к книгам = " + serviceComments.count());
+    }
 
 }

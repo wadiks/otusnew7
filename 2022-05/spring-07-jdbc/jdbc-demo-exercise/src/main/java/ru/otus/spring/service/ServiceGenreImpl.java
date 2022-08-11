@@ -24,12 +24,12 @@ public class ServiceGenreImpl implements ServiceGenre {
 
     public Optional<Genre> getById(long id) {
 
-        return genreDao.getById(id);
+        return genreDao.findById(id);
     }
 
     public List<Genre> getAll() {
 
-        return genreDao.getAll();
+        return genreDao.findAll();
     }
 
     public void gPrint(List<Genre> genres) {

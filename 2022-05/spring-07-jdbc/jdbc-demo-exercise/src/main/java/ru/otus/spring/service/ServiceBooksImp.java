@@ -35,25 +35,25 @@ public class ServiceBooksImp implements ServiceBooks {
 
     @Transactional()
     public void Update(int number, String name) {
-        serviceGenre.gPrint(genreDao.getAll());
+        serviceGenre.gPrint(serviceGenre.getAll());
         var eBook = getById(number).get();
         if (null != name) eBook.setName(name);
         save(eBook);
     }
 
     public Optional<Books> getById(long id) {
-        return booksDao.getById(id);
+        return booksDao.findById(id);
     }
 
     @Transactional(readOnly = true)
     public List<Books> getAll() {
-        return booksDao.getAll();
+        return booksDao.findAll();
     }
 
     @Transactional()
-    public void deleteById(int number) {
-        var book = booksDao.getById(number);
-        booksDao.deleteById(book.get());
+    public void deleteById(long number) {
+        var book = booksDao.findById(number);
+        booksDao.delete(book.get());
     }
 
     public void bPrint(List<Books> books) {

@@ -13,23 +13,19 @@ public class ServiceAuthorImpl implements ServiceAuthor {
     final AuthorsDao authorsDao;
 
     public ServiceAuthorImpl(AuthorsDao authorsDao) {
-
         this.authorsDao = authorsDao;
     }
 
     public Long count() {
-
         return authorsDao.count();
     }
 
     public Optional<Authors> getById(long id) {
-
-        return authorsDao.getById(id);
+        return authorsDao.findById(id);
     }
 
     public List<Authors> getAll() {
-
-        return authorsDao.getAll();
+        return authorsDao.findAll();
     }
 
     public void aPrint(List<Authors> authors) {

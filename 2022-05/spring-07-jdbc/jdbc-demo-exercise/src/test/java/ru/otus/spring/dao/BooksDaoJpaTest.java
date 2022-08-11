@@ -11,15 +11,16 @@ import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.model.Books;
+import ru.otus.spring.service.ServiceBooks;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
-@DisplayName("Запуск теста JPA")
+@DisplayName("Запуск теста JPARepository")
 @DataJpaTest
-@Import({BooksDaoJpa.class})
+@Import({ServiceBooks.class})
 class BooksDaoJpaTest {
 
     private static final long EXPECTED_BOOKS_COUNT = 8;
@@ -29,7 +30,7 @@ class BooksDaoJpaTest {
     @Autowired
     private TestEntityManager em;
     @Autowired
-    private BooksDaoJpa booksJpa;
+    private ServiceBooks serviceBooks;
 
 
     @BeforeTransaction
@@ -44,49 +45,44 @@ class BooksDaoJpaTest {
 
     @DisplayName("Количество книг в БД")
     @Test
-    @Transactional(readOnly = true)
     void shouldReturnExpectedBooksCount() {
-        Long actualBooksCount = booksJpa.count();
+        Long actualBooksCount = serviceBooks.count();
         assertThat(actualBooksCount).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
 
     @DisplayName("добавление книг в БД")
     @Test
-    @Transactional()
     void shouldInsertBooks() {
         Books expectedBooks = new Books("Война и мир");
-        booksJpa.save(expectedBooks);
-        Books actualBooks = booksJpa.getById(expectedBooks.getId()).get();
+        serviceBooks.save(expectedBooks);
+        Books actualBooks = serviceBooks.getById(expectedBooks.getId()).get();
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
     }
 
     @DisplayName("возвращение книги по его id")
     @Test
-    @Transactional()
     void shouldReturnExpectedBooksById() {
-        val optionalActualBooks = booksJpa.getById(FIRST_BOOKS_ID);
+        val optionalActualBooks = serviceBooks.getById(FIRST_BOOKS_ID);
         val expectedStudent = em.find(Books.class, FIRST_BOOKS_ID);
         assertThat(optionalActualBooks).isPresent().get().usingRecursiveComparison().isEqualTo(expectedStudent);
     }
 
     @DisplayName("удалять заданную книгу по его id")
     @Test
-    @Transactional
     void shouldCorrectDeleteBooksById() {
-        var book = booksJpa.getById(FIRST_BOOKS_ID);
+        var book = serviceBooks.getById(FIRST_BOOKS_ID);
         assertThatCode(() -> book.get())
                 .doesNotThrowAnyException();
 
-        booksJpa.deleteById(book.get());
-        Long actualBooksCount = booksJpa.count();
+        serviceBooks.deleteById(book.get().getId());
+        Long actualBooksCount = serviceBooks.count();
         assertThat(actualBooksCount).isEqualTo(7L);
     }
 
     @DisplayName("возвращать список книг")
     @Test
-    @Transactional(readOnly = true)
     void shouldReturnExpectedBooksList() {
-        List<Books> actualBooksList = booksJpa.getAll();
+        List<Books> actualBooksList = serviceBooks.getAll();
         assertNotNull("Обьект возвращает null проверьте данные", actualBooksList);
     }
 

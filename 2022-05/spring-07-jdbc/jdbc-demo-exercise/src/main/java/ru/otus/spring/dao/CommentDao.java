@@ -1,21 +1,9 @@
 package ru.otus.spring.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import ru.otus.spring.model.Comment;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface CommentDao {
-
-    Long count();
-
-    Optional<Comment> getById(int id);
-
-    List<Comment> getAll();
-
-    Comment save(Comment comment);
-
-    void deleteById(Comment comment);
-
+public interface CommentDao extends JpaRepository<Comment, Long>, JpaSpecificationExecutor<Comment> {
 
 }
