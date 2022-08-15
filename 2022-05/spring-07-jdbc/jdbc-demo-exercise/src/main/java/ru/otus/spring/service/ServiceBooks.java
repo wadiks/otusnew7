@@ -17,6 +17,6 @@ public interface ServiceBooks {
     List<Books> getAll();
 
     void deleteById(int number);
-    public void bPrint(List<Books> books);
+
 
 }

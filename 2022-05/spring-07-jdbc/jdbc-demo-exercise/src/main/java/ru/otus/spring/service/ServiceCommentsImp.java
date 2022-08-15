@@ -53,9 +53,4 @@ public class ServiceCommentsImp implements ServiceComments {
 
     }
 
-    public void cComment(List<Comment> comment) {
-        comment.forEach(c -> {
-            System.out.println(String.format(" Название книги %s Номер комментария = %s Комментарий = %s", c.getBook_i().getName(), c.getId(), c.getKtext()));
-        });
-    }
 }

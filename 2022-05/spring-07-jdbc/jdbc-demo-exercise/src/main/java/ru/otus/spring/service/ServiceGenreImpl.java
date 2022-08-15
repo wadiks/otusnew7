@@ -32,9 +32,4 @@ public class ServiceGenreImpl implements ServiceGenre {
         return genreDao.getAll();
     }
 
-    public void gPrint(List<Genre> genres) {
-        genres.forEach(g -> {
-            System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", g.getId(), g.getName()));
-        });
-    }
 }

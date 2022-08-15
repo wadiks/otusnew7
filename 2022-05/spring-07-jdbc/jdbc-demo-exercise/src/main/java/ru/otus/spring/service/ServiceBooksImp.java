@@ -35,7 +35,6 @@ public class ServiceBooksImp implements ServiceBooks {
 
     @Transactional()
     public void Update(int number, String name) {
-        serviceGenre.gPrint(genreDao.getAll());
         var eBook = getById(number).get();
         if (null != name) eBook.setName(name);
         save(eBook);
@@ -56,13 +55,4 @@ public class ServiceBooksImp implements ServiceBooks {
         booksDao.deleteById(book.get());
     }
 
-    public void bPrint(List<Books> books) {
-        books.forEach(b -> {
-            System.out.println(String.format("Номер книги = %s Наименование книги = %s   ",
-                    b.getId(), b.getName()));
-            serviceGenre.gPrint(b.getGenres());
-            serviceAuthor.aPrint(b.getAuthors());
-            System.out.println("------Следующая книга --------");
-        });
-    }
 }

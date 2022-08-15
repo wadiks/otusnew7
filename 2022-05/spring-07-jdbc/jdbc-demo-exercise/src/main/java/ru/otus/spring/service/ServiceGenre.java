@@ -13,5 +13,4 @@ public interface ServiceGenre {
 
     List<Genre> getAll();
 
-    void gPrint(List<Genre> genres);
 }

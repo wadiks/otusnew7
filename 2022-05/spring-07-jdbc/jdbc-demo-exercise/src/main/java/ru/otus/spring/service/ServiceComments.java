@@ -19,5 +19,4 @@ public interface ServiceComments {
 
     void deleteById(Comment comment);
 
-    void cComment(List<Comment> comment);
 }

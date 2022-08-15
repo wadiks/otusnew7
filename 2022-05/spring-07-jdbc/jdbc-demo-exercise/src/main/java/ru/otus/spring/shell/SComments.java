@@ -1,5 +1,9 @@
 package ru.otus.spring.shell;
 
+import ru.otus.spring.model.Comment;
+
+import java.util.List;
+
 public interface SComments {
     public void getCommentById();
 
@@ -10,4 +14,6 @@ public interface SComments {
     public void insertComment();
 
     public void cGetAll();
+
+    void cComment(List<Comment> comment);
 }

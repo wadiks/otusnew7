@@ -4,17 +4,27 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.spring.model.Books;
 import ru.otus.spring.service.ServiceBooks;
+import ru.otus.spring.service.ServiceGenre;
 
+import java.util.List;
 import java.util.Scanner;
 
 @ShellComponent
 public class ShellBooks implements SBooks {
 
     final ServiceBooks serviceBooks;
+    final SGenre sGenre;
+    final ServiceGenre serviceGenre;
+    final SAuthor sAuthor;
+    final SComments sComments;
 
 
-    public ShellBooks(ServiceBooks serviceBooks) {
+    public ShellBooks(ServiceBooks serviceBooks, SGenre sGenre, ServiceGenre serviceGenre, SAuthor sAuthor, SComments sComments) {
         this.serviceBooks = serviceBooks;
+        this.sGenre = sGenre;
+        this.serviceGenre = serviceGenre;
+        this.sAuthor = sAuthor;
+        this.sComments = sComments;
     }
     //--------------------------------------------книги ------------------------------------------------------------
 
@@ -25,7 +35,7 @@ public class ShellBooks implements SBooks {
 
     @ShellMethod(value = "Вывод всех книг", key = {"books", "bGetAll"})
     public void getAll() {
-        serviceBooks.bPrint(serviceBooks.getAll());
+        bPrint(serviceBooks.getAll());
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
@@ -35,12 +45,14 @@ public class ShellBooks implements SBooks {
         int number = sc.nextInt();
         var book = serviceBooks.getById(number);
         System.out.println(String.format("Номер книги = %s Наименование книги = %s", book.get().getId(), book.get().getName()));
+        System.out.println("Все комментарии по книге:");
+        sComments.cComment(book.get().getComments());
     }
 
     @ShellMethod(value = "Удалить книгу", key = {"del", "delete"})
     public void delBook() {
         System.out.println("Какую книгу хотите удалить");
-        serviceBooks.bPrint(serviceBooks.getAll());
+        bPrint(serviceBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
@@ -51,13 +63,14 @@ public class ShellBooks implements SBooks {
     @ShellMethod(value = "Изменить название книги", key = {"rename"})
     public void updateBook() {
         System.out.println("Какую книгу хотите изменить");
-        serviceBooks.bPrint(serviceBooks.getAll());
+        bPrint(serviceBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         int number = sc.nextInt();
         System.out.println("Введите название книги:");
         sc.nextLine();
         String name = sc.nextLine();
+        sGenre.gPrint(serviceGenre.getAll());
         serviceBooks.Update(number, name);
         System.out.println("Книга изменена");
     }
@@ -69,6 +82,16 @@ public class ShellBooks implements SBooks {
         String name = sc.nextLine();
         serviceBooks.save(new Books(name));
         System.out.println("Книга добавлена");
+    }
+
+    public void bPrint(List<Books> books) {
+        books.forEach(b -> {
+            System.out.println(String.format("Номер книги = %s Наименование книги = %s   ",
+                    b.getId(), b.getName()));
+            sGenre.gPrint(b.getGenres());
+            sAuthor.aPrint(b.getAuthors());
+            System.out.println("------Следующая книга --------");
+        });
     }
 
 }

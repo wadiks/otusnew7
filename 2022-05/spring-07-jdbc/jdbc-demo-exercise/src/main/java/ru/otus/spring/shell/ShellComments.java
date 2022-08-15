@@ -6,6 +6,7 @@ import ru.otus.spring.model.Comment;
 import ru.otus.spring.service.ServiceBooks;
 import ru.otus.spring.service.ServiceComments;
 
+import java.util.List;
 import java.util.Scanner;
 
 @ShellComponent
@@ -13,10 +14,12 @@ public class ShellComments implements SComments {
 
     final ServiceComments serviceComments;
     final ServiceBooks serviceBooks;
+    final SBooks sBooks;
 
-    public ShellComments(ServiceComments serviceComments, ServiceBooks serviceBooks) {
+    public ShellComments(ServiceComments serviceComments, ServiceBooks serviceBooks, SBooks sBooks) {
         this.serviceComments = serviceComments;
         this.serviceBooks = serviceBooks;
+        this.sBooks = sBooks;
     }
 
     @ShellMethod(value = "Найти коментарий по id", key = {"cId", "cGetId"})
@@ -30,7 +33,7 @@ public class ShellComments implements SComments {
 
     @ShellMethod(value = "Удалить коментарий", key = {"delCom", "deleteComment"})
     public void delComment() {
-        serviceComments.cComment(serviceComments.getAll());
+        cComment(serviceComments.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
         int gNumber = sc.nextInt();
@@ -40,7 +43,7 @@ public class ShellComments implements SComments {
 
     @ShellMethod(value = "Изменить коментарий", key = {"cRename"})
     public void updateComment() {
-        serviceComments.cComment(serviceComments.getAll());
+        cComment(serviceComments.getAll());
         final Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите изменить:");
         int gNumber = sc.nextInt();
@@ -53,7 +56,7 @@ public class ShellComments implements SComments {
 
     @ShellMethod(value = "Добавить комментарий", key = {"insCom", "insertComment"})
     public void insertComment() {
-        serviceBooks.bPrint(serviceBooks.getAll());
+        sBooks.bPrint(serviceBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги в которую хотите добавить комментарий:");
         int gNumber = sc.nextInt();
@@ -66,8 +69,13 @@ public class ShellComments implements SComments {
 
     @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
     public void cGetAll() {
-        serviceComments.cComment(serviceComments.getAll());
+        cComment(serviceComments.getAll());
     }
 
+    public void cComment(List<Comment> comment) {
+        comment.forEach(c -> {
+            System.out.println(String.format(" Название книги %s Номер комментария = %s Комментарий = %s", c.getBook_i().getName(), c.getId(), c.getKtext()));
+        });
+    }
 
 }
