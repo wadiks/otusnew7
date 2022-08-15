@@ -17,24 +17,22 @@ public class ServiceGenreImpl implements ServiceGenre {
         this.genreDao = genreDao;
     }
 
+    @Override
     public Long count() {
 
         return genreDao.count();
     }
 
+    @Override
     public Optional<Genre> getById(long id) {
 
         return genreDao.findById(id);
     }
 
+    @Override
     public List<Genre> getAll() {
 
         return genreDao.findAll();
     }
 
-    public void gPrint(List<Genre> genres) {
-        genres.forEach(g -> {
-            System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", g.getId(), g.getName()));
-        });
-    }
 }

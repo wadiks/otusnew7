@@ -24,45 +24,36 @@ public class ServiceBooksImp implements ServiceBooks {
         this.serviceAuthor = serviceAuthor;
     }
 
+    @Override
     public Long count() {
         return booksDao.count();
     }
 
-    @Transactional()
+    @Override
     public Books save(Books books) {
         return booksDao.save(books);
     }
 
-    @Transactional()
     public void Update(int number, String name) {
-        serviceGenre.gPrint(serviceGenre.getAll());
         var eBook = getById(number).get();
         if (null != name) eBook.setName(name);
         save(eBook);
     }
 
+    @Override
     public Optional<Books> getById(long id) {
         return booksDao.findById(id);
     }
 
-    @Transactional(readOnly = true)
+    @Override
     public List<Books> getAll() {
         return booksDao.findAll();
     }
 
-    @Transactional()
+    @Override
     public void deleteById(long number) {
         var book = booksDao.findById(number);
         booksDao.delete(book.get());
     }
 
-    public void bPrint(List<Books> books) {
-        books.forEach(b -> {
-            System.out.println(String.format("Номер книги = %s Наименование книги = %s   ",
-                    b.getId(), b.getName()));
-            serviceGenre.gPrint(b.getGenres());
-            serviceAuthor.aPrint(b.getAuthors());
-            System.out.println("------Следующая книга --------");
-        });
-    }
 }

@@ -16,21 +16,20 @@ public class ServiceAuthorImpl implements ServiceAuthor {
         this.authorsDao = authorsDao;
     }
 
+    @Override
     public Long count() {
         return authorsDao.count();
     }
 
+    @Override
     public Optional<Authors> getById(long id) {
         return authorsDao.findById(id);
     }
 
+    @Override
     public List<Authors> getAll() {
         return authorsDao.findAll();
     }
 
-    public void aPrint(List<Authors> authors) {
-        authors.forEach(a -> {
-            System.out.println(String.format("Номер автора = %s Назвавние автора = %s %s", a.getId(), a.getName(), a.getSurname()));
-        });
-    }
+
 }

@@ -18,14 +18,14 @@ public class Comment {
     @Id
     private long id;
 
-    private String ktext;
+    private String kText;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    private Books book_i;
+    private Books book;
 
-    public Comment(String ktext, long book_id) {
-        this.ktext = ktext;
+    public Comment(String kText, long book_id) {
+        this.kText = kText;
     }
 
 }

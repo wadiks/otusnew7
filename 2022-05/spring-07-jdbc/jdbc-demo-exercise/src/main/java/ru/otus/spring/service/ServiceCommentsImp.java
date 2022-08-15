@@ -29,28 +29,23 @@ public class ServiceCommentsImp implements ServiceComments {
         return commentDao.findAll();
     }
 
-    @Transactional()
+    @Override
     public Comment insert(Comment comment) {
         commentDao.save(comment);
         return null;
     }
 
-    @Transactional()
+    @Override
     public Comment Update(int number, String comment) {
         final var fComment = getById(number).get();
-        fComment.setKtext(comment);
+        fComment.setKText(comment);
         commentDao.save(fComment);
         return null;
     }
 
-    @Transactional()
+    @Override
     public void deleteById(Comment comment) {
         commentDao.delete(comment);
     }
 
-    public void cComment(List<Comment> comment) {
-        comment.forEach(c -> {
-            System.out.println(String.format(" Название книги %s Номер комментария = %s Комментарий = %s", c.getBook_i().getName(), c.getId(), c.getKtext()));
-        });
-    }
 }

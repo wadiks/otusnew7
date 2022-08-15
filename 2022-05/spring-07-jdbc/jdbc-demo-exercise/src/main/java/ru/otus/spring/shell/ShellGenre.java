@@ -2,9 +2,11 @@ package ru.otus.spring.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.otus.spring.model.Genre;
 import ru.otus.spring.service.ServiceGenre;
 import ru.otus.spring.service.ServiceGenreImpl;
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -21,7 +23,7 @@ public class ShellGenre implements SGenre {
 
     public void getGenre() {
         System.out.println("Все жанры книг = ");
-        serviceGenre.gPrint(serviceGenre.getAll());
+        gPrint(serviceGenre.getAll());
     }
 
     @ShellMethod(value = "Количество жанров", key = {"g", "gCount"})
@@ -39,4 +41,9 @@ public class ShellGenre implements SGenre {
         System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", eGenre.get().getId(), eGenre.get().getName()));
     }
 
+    public void gPrint(List<Genre> genres) {
+        genres.forEach(g -> {
+            System.out.println(String.format("Номер жанра = %s Наименование жанра = %s", g.getId(), g.getName()));
+        });
+    }
 }

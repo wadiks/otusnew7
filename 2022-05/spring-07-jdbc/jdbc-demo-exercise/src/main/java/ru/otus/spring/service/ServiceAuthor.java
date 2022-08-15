@@ -13,6 +13,4 @@ public interface ServiceAuthor {
 
     List<Authors> getAll();
 
-    public void aPrint(List<Authors> authors);
-
 }
