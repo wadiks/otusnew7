@@ -18,28 +18,39 @@ public class ServiceCommentsImp implements ServiceComments {
         this.commentDao = commentDao;
     }
 
+    @Override
     public Long count() {
 
         return commentDao.count();
     }
 
+    @Override
     public Optional<Comment> getById(int id) {
 
         return commentDao.getById(id);
     }
 
+    @Override
     public List<Comment> getAll() {
 
         return commentDao.getAll();
     }
 
+    @Override
+    public List<Comment> getAll(int id) {
+
+        return commentDao.getAll(id);
+    }
+
     @Transactional()
+    @Override
     public Comment insert(Comment comment) {
         commentDao.save(comment);
         return null;
     }
 
     @Transactional()
+    @Override
     public Comment Update(int number, String comment) {
         final var fComment = getById(number).get();
         fComment.setKtext(comment);
@@ -48,6 +59,7 @@ public class ServiceCommentsImp implements ServiceComments {
     }
 
     @Transactional()
+    @Override
     public void deleteById(Comment comment) {
         commentDao.deleteById(comment);
 

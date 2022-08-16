@@ -36,6 +36,13 @@ public class CommentDaoJpa implements CommentDao {
                 .getResultList();
     }
 
+    @Override
+    public List<Comment> getAll(int id) {
+        return em.createQuery("select  c from Comment c where c.book_i = :bId ", Comment.class)
+                .setParameter("bId",id)
+                .getResultList();
+    }
+
     public Comment save(Comment comment) {
         if (comment.getId() <= 0) {
             em.persist(comment);

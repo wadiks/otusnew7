@@ -69,7 +69,11 @@ public class ShellComments implements SComments {
 
     @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
     public void cGetAll() {
-        cComment(serviceComments.getAll());
+        sBooks.bPrint(serviceBooks.getAll());
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Введите номер книги к которой хотите вывести все комментарий:");
+        int gNumber = sc.nextInt();
+        cComment(serviceComments.getAll(gNumber));
     }
 
     public void cComment(List<Comment> comment) {
