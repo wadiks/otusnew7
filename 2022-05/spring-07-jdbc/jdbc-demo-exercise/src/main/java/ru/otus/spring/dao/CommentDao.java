@@ -1,9 +1,12 @@
 package ru.otus.spring.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
 import ru.otus.spring.model.Comment;
 
-public interface CommentDao extends JpaRepository<Comment, Long>, JpaSpecificationExecutor<Comment> {
+import java.util.List;
+
+public interface CommentDao extends CrudRepository<Comment, Long> {
+
+    List<Comment> findAll();
 
 }

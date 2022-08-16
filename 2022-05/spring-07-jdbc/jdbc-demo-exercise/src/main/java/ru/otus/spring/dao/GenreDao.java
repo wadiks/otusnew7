@@ -1,9 +1,11 @@
 package ru.otus.spring.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
 import ru.otus.spring.model.Genre;
 
-public interface GenreDao extends JpaRepository<Genre, Long>, JpaSpecificationExecutor<Genre> {
+import java.util.List;
 
+public interface GenreDao extends CrudRepository<Genre, Long> {
+
+    List<Genre> findAll();
 }
