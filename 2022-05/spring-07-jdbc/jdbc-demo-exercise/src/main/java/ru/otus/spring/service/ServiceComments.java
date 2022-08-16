@@ -13,8 +13,6 @@ public interface ServiceComments {
 
     List<Comment> getAll();
 
-    List<Comment> getAll(int id);
-
     Comment insert(Comment comment);
 
     Comment Update( int number, String comment);

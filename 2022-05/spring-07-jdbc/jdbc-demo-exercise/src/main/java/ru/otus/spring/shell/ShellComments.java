@@ -26,8 +26,8 @@ public class ShellComments implements SComments {
     public void getCommentById() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария:");
-        int number = sc.nextInt();
-        var commentById = serviceComments.getById(number);
+        final int number = sc.nextInt();
+        final var commentById = serviceComments.getById(number);
         System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.get().getId(), commentById.get().getKtext()));
     }
 
@@ -36,7 +36,7 @@ public class ShellComments implements SComments {
         cComment(serviceComments.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
-        int gNumber = sc.nextInt();
+        final int gNumber = sc.nextInt();
         serviceComments.deleteById(serviceComments.getById(gNumber).get());
         System.out.println("Комментарий изменен");
     }
@@ -46,7 +46,7 @@ public class ShellComments implements SComments {
         cComment(serviceComments.getAll());
         final Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите изменить:");
-        int gNumber = sc.nextInt();
+        final int gNumber = sc.nextInt();
         System.out.println("Введите комментарий:");
         sc.nextLine();
         final String com = sc.nextLine();
@@ -59,7 +59,7 @@ public class ShellComments implements SComments {
         sBooks.bPrint(serviceBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги в которую хотите добавить комментарий:");
-        int gNumber = sc.nextInt();
+        final int gNumber = sc.nextInt();
         System.out.println("Введите комментарий:");
         sc.nextLine();
         String com = sc.nextLine();
@@ -72,8 +72,9 @@ public class ShellComments implements SComments {
         sBooks.bPrint(serviceBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги к которой хотите вывести все комментарий:");
-        int gNumber = sc.nextInt();
-        cComment(serviceComments.getAll(gNumber));
+        final int gNumber = sc.nextInt();
+        final var book =  serviceBooks.getById(gNumber);
+        cComment(book.get().getComments());
     }
 
     public void cComment(List<Comment> comment) {

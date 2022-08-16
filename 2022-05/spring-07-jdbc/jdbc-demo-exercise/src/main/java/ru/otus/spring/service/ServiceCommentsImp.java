@@ -36,11 +36,6 @@ public class ServiceCommentsImp implements ServiceComments {
         return commentDao.getAll();
     }
 
-    @Override
-    public List<Comment> getAll(int id) {
-
-        return commentDao.getAll(id);
-    }
 
     @Transactional()
     @Override

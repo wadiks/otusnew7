@@ -13,8 +13,6 @@ public interface CommentDao {
 
     List<Comment> getAll();
 
-    List<Comment> getAll(int id);
-
     Comment save(Comment comment);
 
     void deleteById(Comment comment);
