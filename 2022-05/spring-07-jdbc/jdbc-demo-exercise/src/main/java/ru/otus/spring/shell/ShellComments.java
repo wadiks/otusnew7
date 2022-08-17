@@ -79,7 +79,7 @@ public class ShellComments implements SComments {
 
     public void cComment(List<Comment> comment) {
         comment.forEach(c -> {
-            System.out.println(String.format(" Название книги %s Номер комментария = %s Комментарий = %s", c.getBook().getName(), c.getId(), c.getKText()));
+            System.out.println(String.format(" Название книги %s Номер комментария = %s Комментарий = %s", c.getBook_id(), c.getId(), c.getKText()));
         });
     }
 
