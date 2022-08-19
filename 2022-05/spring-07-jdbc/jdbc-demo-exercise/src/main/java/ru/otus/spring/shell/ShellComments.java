@@ -1,5 +1,6 @@
 package ru.otus.spring.shell;
 
+import org.hibernate.Hibernate;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.spring.model.Comment;
@@ -74,6 +75,7 @@ public class ShellComments implements SComments {
         System.out.println("Введите номер книги к которой хотите вывести все комментарий:");
         final int gNumber = sc.nextInt();
         final var book =  serviceBooks.getById(gNumber);
+        Hibernate.initialize(book.get().getComments());
         cComment(book.get().getComments());
     }
 
