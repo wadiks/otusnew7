@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
@@ -14,14 +15,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Comment {
 
     @Id
-    private long id;
+    private String id;
 
-    private String kText;
-
+    private String ktext;
+    @DBRef
     private Books book_id;
 
-    public Comment(String kText, long book_id) {
-        this.kText = kText;
+    public Comment(String kText, Books book_id) {
+        this.ktext = kText;
+        this.book_id = book_id;
     }
 
 }

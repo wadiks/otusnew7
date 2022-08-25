@@ -5,7 +5,7 @@ import ru.otus.spring.model.Books;
 
 import java.util.List;
 
-public interface BooksDao extends CrudRepository<Books, Long> {
+public interface BooksDao extends CrudRepository<Books, String> {
 
     List<Books> findAll();
 

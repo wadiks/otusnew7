@@ -3,18 +3,6 @@ spring:
     allow-circular-references: true
   data:
     mongodb:
-      database: company
+      database: library
 
 
-  sql:
-    init:
-      mode: always
-      data-locations: data.sql
-      schema-locations: schema.sql
-
-#  jpa:
-#    generate-ddl: false
-#    hibernate:
-#      ddl-auto: none
-
-    show-sql: true

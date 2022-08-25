@@ -2,9 +2,10 @@ package ru.otus.spring.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.otus.spring.dao.BooksDao;
+import ru.otus.spring.model.Authors;
 import ru.otus.spring.model.Books;
-import ru.otus.spring.service.ServiceBooks;
-import ru.otus.spring.service.ServiceGenre;
+import ru.otus.spring.model.Genre;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,62 +13,57 @@ import java.util.Scanner;
 @ShellComponent
 public class ShellBooks implements SBooks {
 
-    final ServiceBooks serviceBooks;
-    final SAuthor sAuthor;
-    final SGenre sGenre;
-    final ServiceGenre serviceGenre;
+    final BooksDao booksDao;
 
 
-    public ShellBooks(ServiceBooks serviceBooks, SAuthor sAuthor, SGenre sGenre, ServiceGenre serviceGenre) {
-        this.serviceBooks = serviceBooks;
-        this.sAuthor = sAuthor;
-        this.sGenre = sGenre;
-        this.serviceGenre = serviceGenre;
+    public ShellBooks(BooksDao booksDao) {
+        this.booksDao = booksDao;
     }
     //--------------------------------------------книги ------------------------------------------------------------
 
     @ShellMethod(value = "Количество книг", key = {"c", "count"})
     public void count() {
-        System.out.println("Количество книг = " + serviceBooks.count());
+        System.out.println("Количество книг = " + booksDao.count());
     }
 
     @ShellMethod(value = "Вывод всех книг", key = {"books", "bGetAll"})
     public void getAll() {
-        bPrint(serviceBooks.getAll());
+        bPrint(booksDao.findAll());
     }
 
     @ShellMethod(value = "Найти книгу по id", key = {"bId", "bGetId"})
     public void getBookById() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
-        int number = sc.nextInt();
-        var book = serviceBooks.getById(number);
+        final var number = sc.nextLong();
+        var book = booksDao.findById(String.valueOf(number));
         System.out.println(String.format("Номер книги = %s Наименование книги = %s", book.get().getId(), book.get().getName()));
     }
 
     @ShellMethod(value = "Удалить книгу", key = {"del", "delete"})
     public void delBook() {
         System.out.println("Какую книгу хотите удалить");
-        bPrint(serviceBooks.getAll());
+        bPrint(booksDao.findAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
         long number = sc.nextLong();
-        serviceBooks.deleteById(number);
+        booksDao.deleteById(String.valueOf(number));
         System.out.println("Книга удалена");
     }
 
     @ShellMethod(value = "Изменить название книги", key = {"rename"})
     public void updateBook() {
         System.out.println("Какую книгу хотите изменить");
-        bPrint(serviceBooks.getAll());
+        bPrint(booksDao.findAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги:");
-        int number = sc.nextInt();
+        final var number = sc.nextLong();
         System.out.println("Введите название книги:");
         sc.nextLine();
         String name = sc.nextLine();
-        sGenre.gPrint(serviceGenre.getAll());
-        serviceBooks.Update(number, name);
+        var book = booksDao.findById(String.valueOf(number));
+        book.get().setName(name);
+        booksDao.save(book.get());
         System.out.println("Книга изменена");
     }
 
@@ -76,7 +72,7 @@ public class ShellBooks implements SBooks {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите название книги:");
         String name = sc.nextLine();
-        serviceBooks.save(new Books(name));
+        booksDao.save(new Books(name));
         System.out.println("Книга добавлена");
     }
 
@@ -84,10 +80,25 @@ public class ShellBooks implements SBooks {
         books.forEach(b -> {
             System.out.println(String.format("Номер книги = %s Наименование книги = %s   ",
                     b.getId(), b.getName()));
-            sGenre.gPrint(b.getGenres());
-            sAuthor.aPrint(b.getAuthors());
+            gPrint(b.getGenres());
+            aPrint(b.getAuthors());
             System.out.println("------Следующая книга --------");
         });
     }
+
+    public void aPrint(List<Authors> authors) {
+        authors.forEach(a -> {
+            System.out.println(String.format(" Назвавние автора = %s %s", a.getName(), a.getSurname()));
+        });
+    }
+
+    public void gPrint(List<Genre> genres) {
+        genres.forEach(g -> {
+            System.out.println(String.format("Наименование жанра = %s", g.getName()));
+        });
+    }
+
+
+
 
 }

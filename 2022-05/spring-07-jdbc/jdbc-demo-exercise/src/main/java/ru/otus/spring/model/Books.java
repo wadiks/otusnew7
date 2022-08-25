@@ -15,15 +15,13 @@ import java.util.List;
 public class Books {
 
     @Id
-    private long id;
+    private String id;
 
     private String name;
 
     private List<Genre> genres;
 
     private List<Authors> authors;
-
-    private List<Comment> comments;
 
     public Books(String name) {
         this.name = name;
