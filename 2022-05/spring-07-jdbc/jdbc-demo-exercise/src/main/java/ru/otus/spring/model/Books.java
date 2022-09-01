@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,7 @@ import java.util.List;
 public class Books {
 
     @Id
-    private String id;
+    private Long id;
 
     private String name;
 
@@ -23,7 +24,25 @@ public class Books {
 
     private List<Authors> authors;
 
+    public Books(Long id) {
+        this.id = id;
+    }
+
     public Books(String name) {
         this.name = name;
+    }
+
+    public String getAuthor() {
+        if (null != this.authors) {
+            var rez = this.authors.stream().map(m -> m.getName() + " " + m.getSurname()).collect(Collectors.toSet());
+            return String.join(",", rez);
+        } else return "";
+    }
+
+    public String getGenre() {
+        if (null != this.genres) {
+            var rez =  this.genres.stream().map(m -> m.getName()).collect(Collectors.toSet());
+            return String.join(",", rez);
+        } else return "";
     }
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Добавление книжек</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]
+
+        ]
+        {
+            background-image: url([[@{/edit.png}]])
+        ;
+            background-repeat: no-repeat
+        ;
+            padding: 2px
+        ;
+            padding-left: 30px
+        ;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Books edition -->
+<form id="edit-form" action="insert.html" th:action="@{/insert}" th:method="post" th:object="${book}">
+    <h3 th:text="Edit"></h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:value="*{id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="books-name-input">Name:</label>
+        <input id="books-name-input" name="name" type="text" th:value="*{name}" value="John Doe"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong book name error</div>
+    </div>
+
+    <div class="row">
+        <label for="books-authors-input">author:</label>
+        <input id="books-authors-input" name="Authors" type="text" th:value="*{author}" value="John Doe"/>
+        <div class="errors" th:if="${#fields.hasErrors('author')}" th:errors="*{name}">Wrong book name error</div>
+    </div>
+
+    <div class="row">
+        <label for="books-genres-input">genre:</label>
+        <input id="books-genres-input" name="genres" type="text" th:value="*{genre}" value="John Doe"/>
+
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="Сохранить">Save</button>
+        <a href="list.html" th:href="@{/}">
+            <button type="button" th:text="Отмена">Cancel</button>
+        </a>
+    </div>
+</form>
+
+</body>
+</html>
