@@ -21,6 +21,7 @@ public class ApplicationShellCommands {
         System.out.println("Удалить коментарий. Команда - delCom, deleteComment");
         System.out.println("Найти коментарий по id. Команда - cId, cGetId");
         System.out.println("Изменить коментарий книги. Команда - cRename");
+        System.out.println( "Изменить автора у книги Команда - ea, editAuthors");
     }
 }
 

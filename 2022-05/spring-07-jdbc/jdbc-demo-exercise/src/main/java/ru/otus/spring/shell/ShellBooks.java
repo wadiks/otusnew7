@@ -92,10 +92,41 @@ public class ShellBooks implements SBooks {
         });
     }
 
+    public void aPrintNum(List<Authors> authors) {
+        for (int i = 0; i < authors.size(); i++) {
+            System.out.println(String.format("Номер записи =%s  Имя и фамилия автора = %s %s", i, authors.get(i).getName(), authors.get(i).getSurname()));
+        }
+    }
+
     public void gPrint(List<Genre> genres) {
         genres.forEach(g -> {
             System.out.println(String.format("Наименование жанра = %s", g.getName()));
         });
+    }
+
+    @ShellMethod(value = "Изменить автора у книги ", key = {"ea", "editAuthors"})
+    public void getEditAuthors() {
+        System.out.println("У какой книги хотете изменить автора");
+        bPrint(booksDao.findAll());
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Введите номер книги:");
+        final var number = sc.nextLong();
+        var book = booksDao.findById(String.valueOf(number)).get();
+        System.out.println("Какого автора хотете измеить?");
+        aPrintNum(book.getAuthors());
+        System.out.println("Введите номер автора:");
+        final var aNumber = sc.nextInt();
+        System.out.println(String.format("Вы выбрали изменить этого втора %s %s Введите полностью Имя и Фамилию через пробел", book.getAuthors().get(aNumber).getName(),
+                book.getAuthors().get(aNumber).getSurname()));
+        String fio = sc.nextLine();
+        var words = fio.trim().split(" ");
+        if (words.length > 1) {
+            book.getAuthors().get(aNumber).setName(words[0].trim());
+            book.getAuthors().get(aNumber).setSurname(words[1].trim());
+            booksDao.save(book);
+            System.out.println("Автор изменен");
+        } else
+            System.out.println("Вы ввели не правильно Имя и фамилию поробуйте еще раз");
     }
 
 
