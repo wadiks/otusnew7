@@ -60,25 +60,31 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.id}">1</td>
-        <td th:text="${book.name}">Гарри потер</td>
-        <td th:text="${book.getAuthor()}">Джоан Роулинг</td>
-        <td th:text="${book.getGenre()}">Фантастика</td>
-        <td>
-            <a th:href="@{/edit(id=${book.id})}" href="edit.html"  > <img src="/edit.png" width="30"
-                                                          height="30" alt="Редактирование"></a>
-        </td>
-        <td>
-        <form th:action="@{/bookDelete}" th:object="${book2}" method="post">
-            <input type="hidden" name="id" th:value="${book.id}">
-            <input type="hidden" name="name" th:value="${book.name}">
-            <input type="hidden" name="authors" th:value="${book.author}">
-            <input type="hidden" name="genres" th:value="${book.genre}">
-            <button type="submit">Delete</button>
-        </form>
-    </td>
-    </tr>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <script>
+
+        $(function () {
+            $.get('/api/books').done(function (books) {
+                books.forEach(function (book) {
+                    var html = '<tr>';
+                    html += '<td>'+  book.id+ '</td>';
+                    html += '<td>'+  book.name+ '</td>';
+                    html += '<td>';
+                    book.authors.forEach(function (author) { html += author.name +' '+author.surname + ' '; });
+                    html += '</td>'
+                    html += '<td>'
+                    book.genres.forEach(function (genre) {  html +=  genre.name + ' ';});
+                    html += '</td>'
+                    html += '<td><a><img src="/edit.png" width="30" height="30" alt="Редактирование"></a></td>';
+                    html += '</tr>';
+
+                    $('tbody').append(html)
+                });
+            })
+        });
+
+    </script>
     </tbody>
 </table>
 <div class="row">
