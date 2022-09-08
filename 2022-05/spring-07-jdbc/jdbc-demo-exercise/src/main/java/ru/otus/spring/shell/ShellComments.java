@@ -2,24 +2,25 @@ package ru.otus.spring.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.spring.dao.BooksDao;
-import ru.otus.spring.dao.CommentDao;
-import ru.otus.spring.model.Comment;
+import ru.otus.spring.use.UseBooks;
+import ru.otus.spring.use.UseComment;
 
-import java.util.List;
 import java.util.Scanner;
 
 @ShellComponent
-public class ShellComments implements SComments {
+public class ShellComments {
 
-    final CommentDao commentDao;
-    final BooksDao booksDao;
-    final SBooks sBooks;
+    final UseComment useComment;
+    final UseBooks useBooks;
 
-    public ShellComments(CommentDao commentDao, BooksDao booksDao, SBooks sBooks) {
-        this.commentDao = commentDao;
-        this.booksDao = booksDao;
-        this.sBooks = sBooks;
+    public ShellComments(UseComment useComment, UseBooks useBooks) {
+        this.useComment = useComment;
+        this.useBooks = useBooks;
+    }
+
+    @ShellMethod(value = "Количество коментариев", key = {"с", "сCount"})
+    public void getCommentCount() {
+        System.out.println(String.format("Количество коментариев к книгам = %s", useComment.count()));
     }
 
     @ShellMethod(value = "Найти коментарий по id", key = {"cId", "cGetId"})
@@ -27,68 +28,52 @@ public class ShellComments implements SComments {
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария:");
         final var number = sc.nextLong();
-        var commentById = commentDao.findById(String.valueOf(number));
-        System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.get().getId(), commentById.get().getKtext()));
+        final var commentById = useComment.getCommentById(number);
+        System.out.println(String.format("Номер коментария = %s Комментарий = %s", commentById.getId(), commentById.getKtext()));
+    }
+
+    @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
+    public void cGetAll() {
+        useBooks.bPrint(useBooks.getAll());
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Введите номер книги к которой хотите вывести все комментарий:");
+        final var gNumber = sc.nextLong();
+        useComment.printComment(useComment.getAllCommentsFromBook(gNumber));
     }
 
     @ShellMethod(value = "Удалить коментарий", key = {"delCom", "deleteComment"})
     public void delComment() {
-        cComment(commentDao.findAll());
+        useComment.printComment(useComment.findAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите удалить:");
-        long gNumber = sc.nextLong();
-        commentDao.delete(commentDao.findById(String.valueOf(gNumber)).get());
+        final var gNumber = sc.nextLong();
+        useComment.delComment(gNumber);
         System.out.println("Комментарий изменен");
     }
 
     @ShellMethod(value = "Изменить коментарий", key = {"cRename"})
     public void updateComment() {
-        cComment(commentDao.findAll());
+        useComment.printComment(useComment.findAll());
         final Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер комментария которой хотите изменить:");
         final var gNumber = sc.nextLong();
         System.out.println("Введите комментарий:");
         sc.nextLine();
         final String com = sc.nextLine();
-        var comment=  commentDao.findById(String.valueOf(gNumber)).get();
-        comment.setKtext(com);
-        commentDao.save(comment);
+        useComment.updateComment(gNumber,com);
         System.out.println("Комментарий изменен");
     }
 
     @ShellMethod(value = "Добавить комментарий", key = {"insCom", "insertComment"})
     public void insertComment() {
-        sBooks.bPrint(booksDao.findAll());
+        useBooks.bPrint(useBooks.getAll());
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите номер книги в которую хотите добавить комментарий:");
         final var gNumber = sc.nextLong();
-        final var books = booksDao.findById(String.valueOf(gNumber));
         System.out.println("Введите комментарий:");
         sc.nextLine();
         String com = sc.nextLine();
-        commentDao.save(new Comment(com, books.get()));
+        useComment.insertComment(gNumber,com);
         System.out.println("Комментарий добавлен ");
     }
-
-    @ShellMethod(value = "Посмотреть все коментарии к книге.", key = {"comment", "cGetAll"})
-    public void cGetAll() {
-        sBooks.bPrint(booksDao.findAll());
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Введите номер книги к которой хотите вывести все комментарий:");
-        final var gNumber = sc.nextLong();
-        final var comments =  commentDao.findBooksById(gNumber);
-        cComment(comments);
-    }
-
-    @ShellMethod(value = "Количество коментариев", key = {"с", "сCount"})
-    public void getCommentCount() {
-        System.out.println("Количество коментариев к книгам = " + commentDao.count());
-    }
-
-    public void cComment(List<Comment> comment) {
-        comment.forEach(c -> {
-            System.out.println(String.format("  Номер комментария = %s Комментарий = %s",  c.getId(), c.getKtext()));
-        });
-    }
-
 }
