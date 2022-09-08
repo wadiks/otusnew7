@@ -1,13 +1,10 @@
 package ru.otus.spring.use;
 
-import org.springframework.stereotype.Service;
 import ru.otus.spring.model.Comment;
 
 import java.util.List;
 
-@Service
 public interface UseComment {
-
 
     public Long count();
 

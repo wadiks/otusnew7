@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 @ShellComponent
 public class ShellBooks {
+
     final UseBooks useBooks;
 
     public ShellBooks(UseBooks useBooks) {
@@ -17,7 +18,7 @@ public class ShellBooks {
 
     //--------------------------------------------книги ------------------------------------------------------------
 
-    @ShellMethod(value = "Количество книг", key = {"c", "count"})
+    @ShellMethod(value = "Количество книг", key = {"cb", "count"})
     public void count() {
         System.out.println("Количество книг = " + useBooks.count());
     }

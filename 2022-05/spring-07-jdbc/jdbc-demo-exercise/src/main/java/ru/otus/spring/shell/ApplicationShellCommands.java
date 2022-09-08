@@ -10,7 +10,7 @@ public class ApplicationShellCommands {
     public void help() {
         System.out.println("Список команд которые можно сделать.");
         System.out.println("Посмотреть весь каталог книг. Команда - books , bGetAll");
-        System.out.println("Количество книг. Команда - c, count");
+        System.out.println("Количество книг. Команда - cb, count");
         System.out.println("Добавить книгу. Команда - ins, insert");
         System.out.println("Удалить книгу. Команда - del, delete");
         System.out.println("Найти книгу по id. Команда - bId, bGetId");

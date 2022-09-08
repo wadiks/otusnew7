@@ -1,11 +1,12 @@
 package ru.otus.spring.use;
 
+import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.BooksDao;
 import ru.otus.spring.dao.CommentDao;
 import ru.otus.spring.model.Comment;
 
 import java.util.List;
-
+@Service
 public class UseCommentImp implements UseComment {
 
     final CommentDao commentDao;

@@ -1,12 +1,13 @@
 package ru.otus.spring.use;
 
+import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.BooksDao;
 import ru.otus.spring.model.Authors;
 import ru.otus.spring.model.Books;
 import ru.otus.spring.model.Genre;
 
 import java.util.List;
-
+@Service
 public class UseBooksImp implements UseBooks {
 
     final BooksDao booksDao;

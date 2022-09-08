@@ -18,7 +18,7 @@ public class ShellComments {
         this.useBooks = useBooks;
     }
 
-    @ShellMethod(value = "Количество коментариев", key = {"с", "сCount"})
+    @ShellMethod(value = "Количество коментариев", key = {"cc", "countComment"})
     public void getCommentCount() {
         System.out.println(String.format("Количество коментариев к книгам = %s", useComment.count()));
     }
