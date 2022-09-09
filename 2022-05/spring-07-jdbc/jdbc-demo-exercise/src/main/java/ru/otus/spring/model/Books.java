@@ -24,14 +24,6 @@ public class Books {
 
     private List<Authors> authors;
 
-    public Books(Long id) {
-        this.id = id;
-    }
-
-    public Books(String name) {
-        this.name = name;
-    }
-
     public String getAuthor() {
         if (null != this.authors) {
             var rez = this.authors.stream().map(m -> m.getName() + " " + m.getSurname()).collect(Collectors.toSet());

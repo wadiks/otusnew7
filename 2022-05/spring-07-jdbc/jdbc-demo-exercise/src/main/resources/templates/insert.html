@@ -27,9 +27,7 @@
     </style>
 
     <style type="text/css" th:inline="text">
-        [[h3]
-
-        ]
+        [[h3]]
         {
             background-image: url([[@{/edit.png}]])
         ;
@@ -46,7 +44,7 @@
 
 <!-- Books edition -->
 <form id="edit-form" action="insert.html" th:action="@{/insert}" th:method="post" th:object="${book}">
-    <h3 th:text="Edit"></h3>
+    <h3 th:text="Insert"></h3>
 
     <div class="row">
         <label for="id-input">ID:</label>
@@ -58,12 +56,16 @@
         <input id="books-name-input" name="name" type="text" th:value="*{name}" value="John Doe"/>
         <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong book name error</div>
     </div>
-
-    <div class="row">
+    <div class="row" th:object="${authors}">
         <label for="books-authors-input">author:</label>
-        <input id="books-authors-input" name="Authors" type="text" th:value="*{author}" value="John Doe"/>
-        <div class="errors" th:if="${#fields.hasErrors('author')}" th:errors="*{name}">Wrong book name error</div>
+        <select class="row" id="books-authors-input" name="Authors">
+            <option value="*{author}">Выберети автора</option>
+            <option th:each="author : ${authors}"
+                    th:value="${author.name} + ' '+ ${author.surname}"
+                    th:text="${author.name} + ' '+ ${author.surname}"></option>
+        </select>
     </div>
+
 
     <div class="row">
         <label for="books-genres-input">genre:</label>

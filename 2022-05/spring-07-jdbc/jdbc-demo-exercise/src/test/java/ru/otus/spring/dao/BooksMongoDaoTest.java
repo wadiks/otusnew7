@@ -1,7 +1,6 @@
 package ru.otus.spring.dao;
 
 import lombok.val;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,8 @@ import ru.otus.spring.model.Authors;
 import ru.otus.spring.model.Books;
 import ru.otus.spring.model.Genre;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,7 +33,7 @@ class BooksMongoDaoTest {
     private BooksDao booksDao;
 
     @BeforeEach
-    void strart() {
+    void start() {
         book.add(new Books() {{
             setId(1L);
             setName("Мидлмарч");
@@ -58,7 +58,7 @@ class BooksMongoDaoTest {
     @DisplayName("добавление книг в БД")
     @Test
     void shouldInsertBooks() {
-        Books expectedBooks = new Books("Война и мир");
+        Books expectedBooks = new Books(null,"Война и мир",null,null);
         booksDao.save(expectedBooks);
         Books actualBooks = booksDao.findById(expectedBooks.getId()).get();
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
