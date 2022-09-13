@@ -8,8 +8,6 @@ import reactor.core.publisher.Mono;
 import ru.otus.spring.dao.BooksDao;
 import ru.otus.spring.model.Books;
 
-import java.util.List;
-
 @RestController
 public class RestBookController {
 
@@ -31,10 +29,9 @@ public class RestBookController {
     }
 
     @GetMapping("/api/bookDelete/{id}")
-    public void delete (@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") String id) {
         booksDao.deleteById(id);
     }
-
 
     @PostMapping("/api/save")
     public Mono<Books> save(@RequestBody Mono<Books> dto) {
