@@ -1,23 +1,24 @@
 package ru.otus.spring.dao;
 
 import lombok.val;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
+import reactor.core.publisher.Flux;
 import ru.otus.spring.model.Authors;
 import ru.otus.spring.model.Books;
 import ru.otus.spring.model.Genre;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @DisplayName("Запуск теста MongoRepository")
@@ -33,7 +34,7 @@ class BooksMongoDaoTest {
     private BooksDao booksDao;
 
     @BeforeEach
-    void strart() {
+    void start() {
         book.add(new Books() {{
             setId(1L);
             setName("Мидлмарч");
@@ -51,25 +52,25 @@ class BooksMongoDaoTest {
     @DisplayName("Количество книг в БД")
     @Test
     void shouldReturnExpectedBooksCount() {
-        Long actualBooksCount = booksDao.count();
+        var actualBooksCount = booksDao.count();
         assertThat(actualBooksCount).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
 
     @DisplayName("добавление книг в БД")
     @Test
     void shouldInsertBooks() {
-        Books expectedBooks = new Books("Война и мир");
+        Books expectedBooks = new Books(null,"Война и мир",null,null);
         booksDao.save(expectedBooks);
-        Books actualBooks = booksDao.findById(expectedBooks.getId()).get();
+        var actualBooks = booksDao.findById(expectedBooks.getId().toString());
         assertThat(actualBooks).usingRecursiveComparison().isEqualTo(expectedBooks);
     }
-
+    //.switchIfEmpty/.defaultIfEmpty/Mono.repeatWhenEmpty
     @DisplayName("возвращение книги по его id")
     @Test
     void shouldReturnExpectedBooksById() {
-        val optionalActualBooks = booksDao.findById(FIRST_BOOKS_ID);
-        if (optionalActualBooks.isEmpty()) System.out.println("Пустой");
-        else System.out.println("optionalActualBooks = " + optionalActualBooks.get());
+        val optionalActualBooks = booksDao.findById(String.valueOf(FIRST_BOOKS_ID));
+        if (null != optionalActualBooks) System.out.println("Пустой");
+        else System.out.println("optionalActualBooks = " + optionalActualBooks);
         Assert.notNull(optionalActualBooks, "Должен придти не нулевой элемент.");
 
     }
@@ -77,18 +78,18 @@ class BooksMongoDaoTest {
     @DisplayName("удалять заданную книгу по его id")
     @Test
     void shouldCorrectDeleteBooksById() {
-        var book = booksDao.findById(FIRST_BOOKS_ID);
-        assertThatCode(() -> book.get())
-                .doesNotThrowAnyException();
-        booksDao.deleteById(book.get().getId());
-        Long actualBooksCount = booksDao.count();
+        var book = booksDao.findById(String.valueOf(FIRST_BOOKS_ID));
+        AtomicReference<Long> rez = null;
+        book.subscribe(books -> rez.set(books.getId()));
+        booksDao.deleteById(rez.toString());
+        var actualBooksCount = booksDao.count();
         assertThat(actualBooksCount).isEqualTo(7L);
     }
 
     @DisplayName("возвращать список книг")
     @Test
     void shouldReturnExpectedBooksList() {
-        List<Books> actualBooksList = booksDao.findAll();
+        Flux<Books> actualBooksList = booksDao.findAll();
         assertNotNull("Обьект возвращает null проверьте данные", actualBooksList);
     }
 
