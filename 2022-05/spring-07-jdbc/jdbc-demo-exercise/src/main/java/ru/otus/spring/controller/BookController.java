@@ -1,26 +1,20 @@
 package ru.otus.spring.controller;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.otus.spring.dao.BooksDao;
 import ru.otus.spring.dto.BookDto;
 import ru.otus.spring.model.Authors;
 import ru.otus.spring.model.Books;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookController {
@@ -38,24 +32,16 @@ public class BookController {
 
     @GetMapping({"/list"})
     public String listPage(Model model) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        System.out.println(authentication.getPrincipal());
-        List<Books> books = this.booksDao.findAll();
-        this.author = (List)books.stream().map((e) -> {
-            return e.getAuthors();
-        }).flatMap(Collection::stream).distinct().collect(Collectors.toList());
+        List<Books> books = booksDao.findAll();
+        author = books.stream().map(e -> e.getAuthors()).flatMap(Collection::stream).distinct().collect(Collectors.toList());
         model.addAttribute("books", books);
         return "list";
     }
 
     @GetMapping({"/edit"})
     public String editPage(@RequestParam("id") Long id, Model model) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        System.out.println("edit==" + authentication.getPrincipal());
-        Books book = (Books)this.booksDao.findById(id).orElseThrow(NotFoundException::new);
-        model.addAttribute("authors", this.author);
+        final var book = booksDao.findById(id).orElseThrow(NotFoundException::new);
+        model.addAttribute("authors", author);
         model.addAttribute("book", book);
         return "edit";
     }
