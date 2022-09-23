@@ -1,0 +1,29 @@
+h1 {
+    color:#0000FF;
+    padding-left: 20px;
+}
+
+h2 {
+    color:#FF0000;
+}
+
+h3 {
+    background-image: url("../index_panorama.png");
+    background-repeat: no-repeat;
+    width: 800px;
+    height: 300px;
+}
+
+.row {
+    padding-left: 280px;
+    margin-top: 50px;
+
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 5px;
+}
