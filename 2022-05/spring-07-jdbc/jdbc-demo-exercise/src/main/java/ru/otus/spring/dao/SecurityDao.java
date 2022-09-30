@@ -6,4 +6,5 @@ import ru.otus.spring.model.Security;
 
 public interface SecurityDao extends MongoRepository<Security, String> {
     List<Security> findAll();
+    Security findByUser(String user);
 }
