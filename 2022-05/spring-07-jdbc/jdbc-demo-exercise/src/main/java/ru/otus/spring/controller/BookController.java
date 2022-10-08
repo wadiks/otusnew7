@@ -1,6 +1,5 @@
 package ru.otus.spring.controller;
 
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +31,7 @@ public class BookController {
         return "index";
     }
 
-    @PostFilter("hasAnyRole('USER','ADMIN','STAFF')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN','STAFF')")
     @GetMapping({"/list"})
     public String listPage(Model model) {
         List<Books> books = booksDao.findAll();
@@ -40,7 +39,7 @@ public class BookController {
         model.addAttribute("books", books);
         return "list";
     }
-    @PostFilter("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping({"/edit"})
     public String editPage(@RequestParam("id") Long id, Model model) {
         final var book = booksDao.findById(id).orElseThrow(NotFoundException::new);
@@ -48,7 +47,7 @@ public class BookController {
         model.addAttribute("book", book);
         return "edit";
     }
-    @PostFilter("hasAnyRole('STAFF','ADMIN')")
+    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
     @GetMapping({"/insert"})
     public String insertPage(Model model) {
         Books book = new Books();
