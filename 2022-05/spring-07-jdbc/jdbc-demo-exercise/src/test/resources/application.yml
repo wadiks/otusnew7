@@ -4,6 +4,27 @@ spring:
   data:
     mongodb:
       database: library
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  batch:
+    job:
+      enabled: false
+  shell:
+    interactive:
+      enabled: false
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.example.springbatch.chandgelogs
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
 
 
 logging:

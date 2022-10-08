@@ -1,4 +1,4 @@
-package ru.otus.spring.model;
+package ru.otus.spring.modelMongo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,18 +12,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Data
 @Document(collection = "comments")
-public class Comment {
+public class CommentMongo {
 
     @Id
     private String id;
 
     private String ktext;
-    @DBRef
-    private Books book_id;
 
-    public Comment(String kText, Books book_id) {
-        this.ktext = kText;
-        this.book_id = book_id;
-    }
+    @DBRef
+    private BooksMongo book_id;
 
 }

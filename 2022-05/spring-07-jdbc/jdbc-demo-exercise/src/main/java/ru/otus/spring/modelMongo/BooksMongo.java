@@ -1,4 +1,4 @@
-package ru.otus.spring.model;
+package ru.otus.spring.modelMongo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,18 +12,15 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Document(collection = "books")
-public class Books {
+public class BooksMongo {
 
     @Id
-    private String id;
+    private long id;
 
     private String name;
 
-    private List<Genre> genres;
+    private List<GenreMongo> genreMongos;
 
-    private List<Authors> authors;
+    private List<AuthorsMongo> authors;
 
-    public Books(String name) {
-        this.name = name;
-    }
 }
