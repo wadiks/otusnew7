@@ -31,7 +31,7 @@ public class BookController {
         return "index";
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN','STAFF')")
+
     @GetMapping({"/list"})
     public String listPage(Model model) {
         List<Books> books = booksDao.findAll();
@@ -39,7 +39,7 @@ public class BookController {
         model.addAttribute("books", books);
         return "list";
     }
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+
     @GetMapping({"/edit"})
     public String editPage(@RequestParam("id") Long id, Model model) {
         final var book = booksDao.findById(id).orElseThrow(NotFoundException::new);
@@ -47,7 +47,7 @@ public class BookController {
         model.addAttribute("book", book);
         return "edit";
     }
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+
     @GetMapping({"/insert"})
     public String insertPage(Model model) {
         Books book = new Books();
@@ -55,7 +55,7 @@ public class BookController {
         model.addAttribute("authors", this.author);
         return "insert";
     }
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+
     @Validated
     @PostMapping({"/insert"})
     public String saveInsert(@ModelAttribute("book") @Valid BookDto book, BindingResult bindingResult, Model model) {
@@ -66,7 +66,7 @@ public class BookController {
             return "redirect:/";
         }
     }
-    @PreAuthorize("hasAnyRole('STAFF','ADMIN')")
+
     @Validated
     @PostMapping({"/edit"})
     public String saveBook(@ModelAttribute("book") @Valid BookDto book, BindingResult bindingResult, Model model) {
@@ -77,7 +77,7 @@ public class BookController {
             return "redirect:/";
         }
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @RequestMapping({"/bookDelete"})
     public String empDelete(@ModelAttribute("book2") BookDto books, Model model) {
         this.booksDao.delete(books.toDomainObject());
