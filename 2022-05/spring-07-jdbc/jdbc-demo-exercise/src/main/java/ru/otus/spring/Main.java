@@ -52,7 +52,6 @@ public class Main {
         SpringApplication.run(Main.class);
         ForkJoinPool pool = ForkJoinPool.commonPool();  // пул потоков
         while (true) {
-            Thread.sleep(2000);
             pool.execute(() -> {
                 List<PolicyOrder> policyOrders = generateOrderItems();
                 List<Polis> polis = insuranceCompany.process(policyOrders);
