@@ -2,5 +2,25 @@ spring:
   data:
     mongodb:
       database: library
+    rest:
+      base-path: /datarest
+  jmx:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+logging:
+  file:
+    path: /
+    name: log.txt
 
 
