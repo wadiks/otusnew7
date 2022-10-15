@@ -2,7 +2,8 @@ spring:
   data:
     mongodb:
       database: library
-
+      uri: mongodb://localhost/library
+    m
 
 logging:
   level:
