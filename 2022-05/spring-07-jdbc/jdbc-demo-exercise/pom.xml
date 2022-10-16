@@ -20,6 +20,10 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <mongock.version>4.1.17</mongock.version>
+
+        <spring.cloud-version>2021.0.4</spring.cloud-version>
+        <spring-cloud-starter-netflix-hystrix.version>2.2.10.RELEASE</spring-cloud-starter-netflix-hystrix.version>
+
     </properties>
 
     <dependencies>
@@ -71,6 +75,12 @@
             <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+            <version>${spring-cloud-starter-netflix-hystrix.version}</version>
+        </dependency>
+
         <!-- Тест  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -101,4 +111,19 @@
             </plugin>
         </plugins>
     </build>
+
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>
