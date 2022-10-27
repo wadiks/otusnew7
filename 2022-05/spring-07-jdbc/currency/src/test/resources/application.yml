@@ -1,0 +1,11 @@
+spring:
+  main:
+    allow-circular-references: true
+  data:
+    mongodb:
+      database: library
+
+
+logging:
+  level:
+    ROOT: ERROR

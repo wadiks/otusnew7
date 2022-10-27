@@ -5,16 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.otus</groupId>
-    <artifactId>jdbc-class-work</artifactId>
+    <artifactId>project-class-work</artifactId>
     <version>1.0</version>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>jdbc-demo-exercise</module>
-        <module>jdbc-demo-solution-3</module>
-        <module>jdbc-demo-solution-4</module>
-        <module>jdbc-demo-solution-5</module>
-        <module>jdbc-demo-solution-final</module>
+        <module>currency</module>
+        <module>currency-exchange</module>
     </modules>
 </project>
