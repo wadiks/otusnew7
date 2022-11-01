@@ -1,10 +1,10 @@
-package ru.otus.spring.dao;
+package ru.otus.spring.dao.service;
 
 import ru.otus.spring.model.CurrencyTypeDb;
 
 import java.util.List;
 
-public interface CurrencyTypeDao {
+public interface ServiceCurrencyType {
 
     List<CurrencyTypeDb> getAll();
 }

@@ -1,4 +1,4 @@
-package ru.otus.spring.model.web;
+package ru.otus.spring.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -31,6 +31,6 @@ public class CurrencyRateContainer implements Serializable {
      * Список курсов
      */
     @JsonProperty("Valute")
-    private List<CurrencyRate> rates;
+    private List<CurrencyRateWeb> rates;
 
 }

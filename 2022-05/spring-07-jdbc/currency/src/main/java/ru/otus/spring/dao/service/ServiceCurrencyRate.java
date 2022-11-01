@@ -1,11 +1,11 @@
-package ru.otus.spring.dao;
+package ru.otus.spring.dao.service;
 
 import ru.otus.spring.model.CurrencyRateDb;
 
 import java.util.Date;
 import java.util.List;
 
-public interface CurrencyRateDao {
+public interface ServiceCurrencyRate {
     List<CurrencyRateDb> getAll();
 
     List<CurrencyRateDb> findByDate(Date curDate);

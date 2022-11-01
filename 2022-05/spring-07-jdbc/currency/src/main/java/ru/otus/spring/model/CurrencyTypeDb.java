@@ -1,4 +1,4 @@
-package ru.otus.spring.model.bd;
+package ru.otus.spring.model;
 
 import lombok.Data;
 
@@ -10,15 +10,15 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(schema = "insis_life_alf", name = "ht_currency_type")
-public class CurrencyType implements Serializable {
+@Table( name = "filter_currency")
+public class CurrencyTypeDb implements Serializable {
 
     @Id
     private String id;
 
     private String name;
 
-    @Column(name = "course_value")
+    @Column(name = "name_decoding")
     private String courseValue;
-
 }
+

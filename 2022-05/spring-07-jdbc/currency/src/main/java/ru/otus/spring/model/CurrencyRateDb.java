@@ -1,4 +1,4 @@
-package ru.otus.spring.model.bd;
+package ru.otus.spring.model;
 
 
 import lombok.Data;
@@ -11,19 +11,10 @@ import java.util.Date;
 
 @Data
 @Entity
-@NoArgsConstructor
-@IdClass(CurrencyRate.CurrencyRatePK.class)
-@Table(name = "course")
-public class CurrencyRate implements Serializable {
+@Table(name = "currency")
+public class CurrencyRateDb implements Serializable {
 
-    public static class CurrencyRatePK implements Serializable {
-
-        private String type;
-
-        private Date curDate;
-
-        private String countryId;
-    }
+//schema = "CBR",
 
     /**
      * Тип валюты  3 символа

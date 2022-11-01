@@ -1,14 +1,26 @@
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
-    #initialization-mode: always
+  jpa:
+    generate-ddl: false
+
+  springdoc:
+    api-docs:
+      path: /api-docs
+
+  main:
+    allow-circular-references: true
+
+      #initialization-mode: always
     #schema: schema.sql
     #data: data.sql
-  sql:
-    init:
-      mode: always
-      data-locations: data.sql
-      schema-locations: schema.sql
+
+#    init:
+#      mode: always
+#      schema-locations: schema.sql
+#      data-locations: data.sql
+
+
 #  h2:
 #    console:
 #      path: /h2-console

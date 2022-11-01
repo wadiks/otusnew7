@@ -1,4 +1,4 @@
-package ru.otus.spring.model.web;
+package ru.otus.spring.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -13,7 +13,7 @@ import java.math.BigInteger;
 
 @Data
 @JsonRootName("Valute")
-public class CurrencyRate implements Serializable {
+public class CurrencyRateWeb implements Serializable {
     /**
      * ID Валюты
      */
