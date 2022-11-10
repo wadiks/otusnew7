@@ -7,6 +7,10 @@
     <groupId>ru.otus</groupId>
     <artifactId>project-class-work</artifactId>
     <version>1.0</version>
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
 
     <packaging>pom</packaging>
 

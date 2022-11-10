@@ -30,7 +30,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 @DisplayName("Запуск теста загрузки курсов")
 @SpringBootTest
 class BooksMongoDaoTest {
@@ -120,8 +119,6 @@ class BooksMongoDaoTest {
         cRate.setValue(rate.getValue());
         return cRate;
     }
-
-
 
 
     private CurrencyRateContainer mapper(String xml) {

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-@Schema(name = "RequestContainerDataType", description = "Контейнер обмена валюты с типом")
+@Schema(name = "RequestContainerDataType", description = "Контейнер загрузки валюты с типом")
 public class RequestDataType extends RequestData {
     @JsonProperty("type")
     public String type;

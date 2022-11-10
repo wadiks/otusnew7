@@ -11,6 +11,8 @@ spring:
   main:
     allow-circular-references: true
 
+server:
+    port: 8888
       #initialization-mode: always
     #schema: schema.sql
     #data: data.sql

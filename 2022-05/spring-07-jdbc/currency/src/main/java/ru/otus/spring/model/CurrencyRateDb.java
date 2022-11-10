@@ -14,8 +14,6 @@ import java.util.Date;
 @Table(name = "currency")
 public class CurrencyRateDb implements Serializable {
 
-//schema = "CBR",
-
     /**
      * Тип валюты  3 символа
      */
@@ -36,7 +34,5 @@ public class CurrencyRateDb implements Serializable {
      */
     @Column(name = "CURRENCY_VALUE")
     private BigDecimal value;
-
-
 
 }

@@ -2,6 +2,7 @@ package ru.otus.spring.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.otus.spring.CurrencyScheduled;
 import ru.otus.spring.dao.service.ServiceCurrencyRate;
 import ru.otus.spring.model.CurrencyRateDb;
 
@@ -14,15 +15,25 @@ import java.util.List;
 public class CurrencyController {
 
     private final ServiceCurrencyRate serviceCurrencyRate;
+    private final CurrencyScheduled currencyScheduled;
+
+
     SimpleDateFormat formatter_dd_MM_yyyy = new SimpleDateFormat("dd.MM.yyyy");
 
-    public CurrencyController(ServiceCurrencyRate serviceCurrencyRate) {
+    public CurrencyController(ServiceCurrencyRate serviceCurrencyRate, CurrencyScheduled currencyScheduled) {
         this.serviceCurrencyRate = serviceCurrencyRate;
+        this.currencyScheduled = currencyScheduled;
     }
 
     @GetMapping("/api/all_currency_date")
     public List<CurrencyRateDb> currency(RequestData rd) {
         return serviceCurrencyRate.findByDate(currencyData(rd.data));
+    }
+
+    @GetMapping("/api/download_currency_now")
+    public String currencyNow() {
+        currencyScheduled.downloadCurrency(formatter_dd_MM_yyyy.format(new Date()));
+        return "OK";
     }
 
     @GetMapping("/api/currency_date_type")
@@ -39,4 +50,6 @@ public class CurrencyController {
         }
         return currencyData;
     }
+
+
 }

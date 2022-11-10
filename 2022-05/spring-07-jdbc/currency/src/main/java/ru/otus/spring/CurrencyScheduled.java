@@ -38,19 +38,28 @@ public class CurrencyScheduled {
     // @Scheduled(cron = "0 1 23 ? * *",zone = "Europe/Moscow")
     @Scheduled(cron = "0 1 * ? * *", zone = "Europe/Moscow")
     private void scheduled() {
+        downloadCurrency(tomorrowDate());
+    }
 
+    public void downloadCurrency (String data){
+        System.out.println("data = " + data);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL + tomorrowDate(), String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL + data, String.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             final var curr = mapper(responseEntity.getBody());
-
+            System.out.println("curr = " + curr);
             final var provDate = curr.getDate();
             if (serviceCurrencyRate.findByDate(provDate).isEmpty()) {
-                var cRDb = filterCourse(curr);
-                cRDb.forEach(cr -> serviceCurrencyRate.save(cr));
+                var crdb = filterCourse(curr);
+                System.out.println("crdb = " + crdb);
+
+                crdb.forEach(cr -> System.out.println("crdb!!!!!!!!!!!! = " + cr));
+
+                crdb.forEach(cr ->  serviceCurrencyRate.save(cr));
             }
         }
     }
+
 
     private List<CurrencyRateDb> filterCourse(CurrencyRateContainer crc) {
         final Date curDate;

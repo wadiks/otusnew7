@@ -32,7 +32,7 @@ public class CurrencyRateDaoImp implements CurrencyRateDao {
 
     @Override
     public void save(CurrencyRateDb cr) {
-        em.merge(cr);
+        em.persist(cr);
     }
 
     @Override
