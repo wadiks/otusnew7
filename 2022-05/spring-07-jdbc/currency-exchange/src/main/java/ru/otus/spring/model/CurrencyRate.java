@@ -1,6 +1,6 @@
 package ru.otus.spring.model;
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -8,23 +8,23 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class Curr implements Serializable {
+public class CurrencyRate implements Serializable {
 
     /**
      * Тип валюты  3 символа
      */
-    private String type;
+    @JsonProperty("type")
+    public String type;
 
     /**
      * Валюта на конкретную дату
      */
-    private Date curDate;
+    @JsonProperty("curDate")
+    public Date curDate;
 
     /**
      * значение валюты
      */
-    private BigDecimal value;
-
-
-
+    @JsonProperty("value")
+    public BigDecimal value;
 }

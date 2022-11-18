@@ -23,9 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests().antMatchers("/").anonymous()
-                .and().authorizeRequests().antMatchers("/list", "/insert", "/edit", "/bookDelete").authenticated()
+                .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
                 .and()
-                .formLogin();
+                .httpBasic();
     }
 
     @Bean
@@ -36,5 +36,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
     }
-
 }

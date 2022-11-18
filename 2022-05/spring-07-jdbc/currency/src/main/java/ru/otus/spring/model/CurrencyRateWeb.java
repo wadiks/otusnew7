@@ -14,6 +14,7 @@ import java.math.BigInteger;
 @Data
 @JsonRootName("Valute")
 public class CurrencyRateWeb implements Serializable {
+
     /**
      * ID Валюты
      */
@@ -25,21 +26,25 @@ public class CurrencyRateWeb implements Serializable {
      */
     @JsonProperty("NumCode")
     private String numCode;
+
     /**
      * Название валюты
      */
     @JsonProperty("CharCode")
     private String charCode;
+
     /**
      * Номинал
      */
     @JsonProperty("Nominal")
     private BigInteger nominal;
+
     /**
      * Расшифровка валюты
      */
     @JsonProperty("Name")
     private String name;
+
     /**
      * курс валюты
      */

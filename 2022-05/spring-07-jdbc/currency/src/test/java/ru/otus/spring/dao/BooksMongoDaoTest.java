@@ -22,10 +22,7 @@ import ru.otus.spring.model.CurrencyRateWeb;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,7 +54,7 @@ class BooksMongoDaoTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
-    @DisplayName("Преобразование из json в обьект после обращения из ЦБР")
+    @DisplayName("Преобразование из json в обьект")
     @Test
     void shouldInsertBooks() throws IOException {
         try (final InputStream is = getClass().getResourceAsStream("/model/Course.xml")) {
@@ -69,7 +66,7 @@ class BooksMongoDaoTest {
         }
     }
 
-    @DisplayName("возвращение книги по его id")
+    @DisplayName("Общее обращение и преобразование.")
     @Test
     void shouldReturnExpectedBooksById() {
 
@@ -80,7 +77,7 @@ class BooksMongoDaoTest {
             final var provDate = curr.getDate();
             if (serviceCurrencyRate.findByDate(provDate).isEmpty()) {
                 var rezc =  filterCourse(curr);
-                System.out.println("provDate = " + rezc);
+                assertNotNull(rezc);
             }
 
         }

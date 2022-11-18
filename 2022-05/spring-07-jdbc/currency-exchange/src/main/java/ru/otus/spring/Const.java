@@ -12,5 +12,5 @@ public final class Const {
      * Переменная для URL обращения загрузки курсов
      * передача даты формат dd.MM.yyyy
      */
-    public static final String URL_REQUEST_CURRENCY = " http://localhost:8888/api/all_currency_date?data=";
+    public static final String URL_REQUEST_CURRENCY = "http://localhost:8888/api/all_currency_date";
 }

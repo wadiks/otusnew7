@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @NoArgsConstructor
@@ -12,13 +13,17 @@ import java.math.BigDecimal;
 @Data
 @Entity
 @Table(name = "currency_exchange")
-public class CurrencyExchange {
+public class CurrencyExchange implements Serializable {
 
     /**
      * ид записси
      */
+    @SequenceGenerator(name = "cur_seq",
+            sequenceName = "currency_sequence",
+            initialValue = 10, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cur_seq")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     /**

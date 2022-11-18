@@ -17,6 +17,6 @@ public class ServiceCurrencyTypeImp implements ServiceCurrencyType {
 
     @Override
     public List<CurrencyTypeDb> getAll() {
-      return  currencyTypeDao.getAll();
+      return  currencyTypeDao.findAll();
     }
 }

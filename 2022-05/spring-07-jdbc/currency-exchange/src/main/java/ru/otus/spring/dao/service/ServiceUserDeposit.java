@@ -11,6 +11,8 @@ public interface ServiceUserDeposit {
 
     List<UserDeposit> getAll();
 
-    void save (UserDeposit entity);
+    void save(UserDeposit entity);
+
+    void insert(UserDeposit entity);
 
 }

@@ -15,5 +15,9 @@ public interface ServiceCurrencyExchange {
 
     List<CurrencyExchange> getAll();
 
-    void save (CurrencyExchange entity);
+    void save(CurrencyExchange entity);
+
+    CurrencyExchange insert(CurrencyExchange entity);
+
+    void delete(CurrencyExchange entity);
 }

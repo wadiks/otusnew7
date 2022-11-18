@@ -7,5 +7,10 @@ import java.util.List;
 public interface ServiceSecurity {
 
     List<Security> findAll();
+
     Security findByUser(String user);
+
+    void sav(Security entity);
+
+    Security insert(Security entity);
 }

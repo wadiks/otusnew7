@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  #jpa:
+  #  generate-ddl: false
+
+ # sql:
+ #   init:
+ #     mode: always
+ #     data-locations: data.sql
+ #     schema-locations: schema.sql
+
+  springdoc:
+    api-docs:
+      path: /api-docs
+
+  jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans : true
+
+
+
+  main:
+    allow-circular-references: true

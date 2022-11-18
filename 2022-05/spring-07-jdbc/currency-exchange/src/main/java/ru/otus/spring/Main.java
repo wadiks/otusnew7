@@ -1,16 +1,17 @@
 package ru.otus.spring;
 
-import org.h2.tools.Console;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class);
-        Console.main(args);
     }
+    // http://localhost:8080/swagger-ui/index.html
+    // консоль http://172.20.0.1:8082
 }
 

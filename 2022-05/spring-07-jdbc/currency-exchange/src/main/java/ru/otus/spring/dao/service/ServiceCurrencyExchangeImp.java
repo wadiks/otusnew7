@@ -1,6 +1,6 @@
 package ru.otus.spring.dao.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import ru.otus.spring.dao.CurrencyExchangeDao;
 import ru.otus.spring.model.CurrencyExchange;
 
@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Repository
 public class ServiceCurrencyExchangeImp implements ServiceCurrencyExchange {
 
     @PersistenceContext
@@ -39,20 +39,36 @@ public class ServiceCurrencyExchangeImp implements ServiceCurrencyExchange {
         currencyExchangeDao.save(entity);
     }
 
+    @Transactional
+    @Override
+    public CurrencyExchange insert(CurrencyExchange entity) {
+        var seq = em.createNativeQuery("select NEXT VALUE FOR currency_sequence from dual")
+                .getSingleResult();
+        em.createNativeQuery("insert into currency_exchange (id, user_deposit, currency_type, currency_deposit) " +
+                        "values (:id, :us, :ct, :cd)")
+                .setParameter("id", seq)
+                .setParameter("us", entity.getUserDeposit())
+                .setParameter("ct", entity.getCurrencyType())
+                .setParameter("cd", entity.getCurrencyDeposit())
+                .executeUpdate();
+        var ret = entity;
+        ret.setId(Long.valueOf(seq.toString()));
+        return ret;
+    }
+
+    @Override
+    public void delete(CurrencyExchange entity) {
+        currencyExchangeDao.delete(entity);
+    }
+
     @Override
     public List<CurrencyExchange> getAllByUserDeposit(long id) {
-        return em.createQuery("select  ce from CurrencyExchange ce where ce.userDeposit = :userId", CurrencyExchange.class)
-                .setParameter("userId", id)
-                .getResultList();
+        return currencyExchangeDao.getAllByUserDeposit(id);
     }
 
     @Override
     public List<CurrencyExchange> getCurrencyTypeByUserDeposit(long id, String type) {
-        return em.createQuery("select  ce from CurrencyExchange ce where ce.userDeposit = :userId and ce.currencyType = :type ", CurrencyExchange.class)
-                .setParameter("userId", id)
-                .setParameter("type", type)
-                .getResultList();
+        return currencyExchangeDao.getCurrencyTypeByUserDeposit(id, type);
     }
-
 
 }

@@ -34,30 +34,26 @@ public class CurrencyScheduled {
     }
 
     private static final String URL = "https://cbr.ru/scripts/XML_daily.asp?date_req=";
+    SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy");
 
-    // @Scheduled(cron = "0 1 23 ? * *",zone = "Europe/Moscow")
-    @Scheduled(cron = "0 1 * ? * *", zone = "Europe/Moscow")
+    @Scheduled(cron = "0 1 23 ? * *",zone = "Europe/Moscow")
     private void scheduled() {
         downloadCurrency(tomorrowDate());
     }
 
-    public void downloadCurrency (String data){
-        System.out.println("data = " + data);
+    public String downloadCurrency (String data){
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL + data, String.class);
         if (HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             final var curr = mapper(responseEntity.getBody());
-            System.out.println("curr = " + curr);
             final var provDate = curr.getDate();
             if (serviceCurrencyRate.findByDate(provDate).isEmpty()) {
                 var crdb = filterCourse(curr);
-                System.out.println("crdb = " + crdb);
-
-                crdb.forEach(cr -> System.out.println("crdb!!!!!!!!!!!! = " + cr));
-
                 crdb.forEach(cr ->  serviceCurrencyRate.save(cr));
             }
+            return format1.format(curr.getDate());
         }
+        return null;
     }
 
 
@@ -110,7 +106,6 @@ public class CurrencyScheduled {
     private String tomorrowDate() {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, 1);
-        SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy");
         return format1.format(cal.getTime());
     }
 

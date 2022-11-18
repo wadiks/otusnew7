@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @NoArgsConstructor
@@ -12,12 +13,15 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "user_security")
-public class Security {
+public class Security implements Serializable {
     /**
      * ид пользователя
      */
+    @SequenceGenerator(name = "sec_seq",
+            sequenceName = "security_sequence",
+            initialValue = 10, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sec_seq")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
